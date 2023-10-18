@@ -5,14 +5,17 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+  public horarios = [
+    { title: 'Horario 1', url: '/horarios/horario', icon: 'mail' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  public grupos = [
+    { title: 'Grupo 1', url: '/grupo/grupo', icon: 'mail' },
+  ];
+  constructor() { }
+
+  cerrarSesion() { }
+
+  activarHorario() { }
+
+  activarGroupo() { }
 }
