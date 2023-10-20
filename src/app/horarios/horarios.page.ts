@@ -8,10 +8,27 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HorariosPage implements OnInit {
   public horario!: string;
+  public primaryColor: string = 'primary';
+  diasSemana: string[] = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   private activatedRoute = inject(ActivatedRoute);
-  constructor() {}
-
+  
+  
+  constructor() { }
+  
   ngOnInit() {
     this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;
+  }
+  
+  changeColor(color: string) {
+    this.primaryColor = color
+  }
+  
+  addRow() {
+  }
+  
+  abrirHerramientas() {
+  }
+
+  addHorario() {
   }
 }
