@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-horarios',
@@ -13,7 +14,7 @@ export class HorariosPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   
   
-  constructor() { }
+  constructor(public navController: NavController) { }
   
   ngOnInit() {
     this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;
@@ -27,6 +28,7 @@ export class HorariosPage implements OnInit {
   }
   
   abrirHerramientas() {
+    this.navController.navigateForward('/herramientas')
   }
 
   addHorario() {

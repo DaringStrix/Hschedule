@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Temporizador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Temporizador</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <div id="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title><ion-input type="text" placeholder="00:00:00"></ion-input></ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <ion-button (click)="play()">
+      <ion-icon slot="icon-only" name="play-circle"></ion-icon>
+    </ion-button>
+    <ion-button (click)="stop()">
+      <ion-icon slot="icon-only" name="stop-circle"></ion-icon>
+    </ion-button>
+    <ion-button (click)="reset()">
+      <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

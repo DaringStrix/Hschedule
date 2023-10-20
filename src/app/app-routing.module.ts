@@ -15,7 +15,11 @@ const routes: Routes = [
   {
     path: 'grupos/:id',
     loadChildren: () => import('./grupos/grupos.module').then( m => m.GruposPageModule)
+  },  {
+    path: 'herramientas',
+    loadChildren: () => import('./herramientas/herramientas.module').then( m => m.HerramientasPageModule)
   }
+
 
 ];
 

@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-uppercase ion-text-center">Herramientas</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="crono" href="/herramientas/crono">
+        <ion-icon name="stopwatch-outline"></ion-icon>
+      </ion-tab-button>
+      <ion-tab-button tab="timer" href="/herramientas/timer">
+        <ion-icon name="timer-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
