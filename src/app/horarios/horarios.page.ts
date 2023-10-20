@@ -31,4 +31,8 @@ export class HorariosPage implements OnInit {
 
   addHorario() {
   }
+  
+  addTarea(){
+
+  }
 }
