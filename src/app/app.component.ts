@@ -6,11 +6,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public horarios = [
-    { title: 'Horario 1', url: '/horarios/horario', icon: 'mail' },
+    { title: 'Horario 1', url: '/horarios/horario 1'},
   ];
+
   public grupos = [
-    { title: 'Grupo 1', url: '/grupo/grupo', icon: 'mail' },
+    { title: 'Grupo 1', url: '/grupos/grupo 1'},
   ];
+
   constructor() { }
 
   cerrarSesion() { }
@@ -18,4 +20,8 @@ export class AppComponent {
   activarHorario() { }
 
   activarGroupo() { }
+
+  getHorarios(index: number){
+    return this.horarios[index].url? this.horarios[index].url : '/login';
+  }
 }
