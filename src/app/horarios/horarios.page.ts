@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { TareaComponent } from '../modals/tarea/tarea.component';
 
 @Component({
   selector: 'app-horarios',
@@ -14,7 +15,17 @@ export class HorariosPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   
   
-  constructor(public navController: NavController) { }
+  constructor(private navController: NavController, private modalCtrl: ModalController) { }
+
+  async abrirTarea() {
+    const modal = await this.modalCtrl.create({
+      component: TareaComponent,
+      componentProps: {
+        primaryColor: this.primaryColor
+      }
+    });
+    modal.present();
+  }
   
   ngOnInit() {
     this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;

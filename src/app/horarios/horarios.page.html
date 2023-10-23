@@ -68,7 +68,8 @@
         <ion-item class="ion-justify-content-center" *ngIf="false">
           <ion-label>{{dia}}</ion-label>
         </ion-item>
-        <ion-button (click)="addTarea()" [color]='primaryColor' expand="block" fill="clear">
+        <!-- añadir tarea -->
+        <ion-button (click)="abrirTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="clear">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
       </ion-col>
@@ -84,8 +85,10 @@
   </ion-grid>
 
   <!-- nuevo horario -->
-  <app-horario [primaryColor]="primaryColor"></app-horario>
+  <app-horario [primaryColor]="primaryColor" [addHorario]="addHorario"></app-horario>
 
   <!-- nueva franja horaria -->
   <app-horas [primaryColor]="primaryColor" [addRow]="addRow"></app-horas>
+
+
 </ion-content>

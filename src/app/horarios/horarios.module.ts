@@ -9,6 +9,7 @@ import { HorariosPageRoutingModule } from './horarios-routing.module';
 import { HorariosPage } from './horarios.page';
 import { HorarioComponent } from '../modals/horario/horario.component';
 import { HorasComponent } from '../modals/horas/horas.component';
+import { TareaComponent } from '../modals/tarea/tarea.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { HorasComponent } from '../modals/horas/horas.component';
     IonicModule,
     HorariosPageRoutingModule
   ],
-  declarations: [HorariosPage , HorarioComponent, HorasComponent]
+  declarations: [HorariosPage , HorarioComponent, HorasComponent, TareaComponent]
 })
 export class HorariosPageModule {}

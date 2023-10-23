@@ -9,10 +9,11 @@ import { HorariosPage } from '../../horarios/horarios.page';
 export class HorarioComponent  implements OnInit {
 
   @Input() primaryColor!: string
+  @Input() addHorario(){}
+
 
   constructor() { }
   ngOnInit() {}
 
-  addHorario(){}
 
 }
