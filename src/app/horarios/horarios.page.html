@@ -31,7 +31,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <!-- add horario -->
+  <!-- boton nuevo horario -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button [color]='primaryColor' id="nuevo-horario">
       <ion-icon name="add"></ion-icon>
@@ -48,7 +48,7 @@
       </ion-col>
       <ion-col size="1.5" *ngFor="let dia of diasSemana">
         <ion-item>
-          <ion-label class="ion-text-uppercase ion-text-center">{{dia}}</ion-label>
+          <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
         </ion-item>
       </ion-col>
 
@@ -75,12 +75,17 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button (click)="addRow()" expand="block" [color]='primaryColor'>
+        <!-- boton nueva franja horaria -->
+        <ion-button id="nueva-hora" expand="block" [color]='primaryColor'>
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <!-- nuevo horario -->
   <app-horario [primaryColor]="primaryColor"></app-horario>
+
+  <!-- nueva franja horaria -->
+  <app-horas [primaryColor]="primaryColor" [addRow]="addRow"></app-horas>
 </ion-content>
