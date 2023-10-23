@@ -10,21 +10,57 @@
       <ion-title size="large">Temporizador</ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
   <div id="container">
+    <ion-card *ngIf="finished">
+      <ion-card-title>
+        <ion-card-header color="danger">
+          <ion-card-title><h1>TIMED OUT</h1></ion-card-title>
+        </ion-card-header>
+      </ion-card-title>
+    </ion-card>
     <ion-card>
       <ion-card-header>
-        <ion-card-title><ion-input type="text" placeholder="00:00:00"></ion-input></ion-card-title>
+        <ion-card-title *ngIf="!started">
+          <ion-grid fixed>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col sizeSm="1" sizeXs="12">
+                <ion-input max="24" type="number" placeholder="00" (ionInput)="onInputHoras($event)"></ion-input>
+              </ion-col>
+              <ion-label> : </ion-label>
+              <ion-col sizeSm="1" sizeXs="12">
+                <ion-input max="60" type="number" placeholder="00" (ionInput)="onInputMin($event)"></ion-input>
+              </ion-col>
+              <ion-label> : </ion-label>
+              <ion-col sizeSm="1" sizeXs="12">
+                <ion-input max="60" type="number" placeholder="00" (ionInput)="onInputSeg($event)"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+        <ion-card-title *ngIf="started">
+          {{ formatElapsedTime() }}
+        </ion-card-title>
       </ion-card-header>
+      <ion-card-content>
+
+        <ion-button (click)="play()" [disabled]="cannotPlay">
+          <ion-icon slot="icon-only" name="play-circle"></ion-icon>
+        </ion-button>
+        <ion-button (click)="stop()">
+          <ion-icon slot="icon-only" name="stop-circle"></ion-icon>
+        </ion-button>
+        <ion-button (click)="reset()">
+          <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
+        </ion-button>
+      </ion-card-content>
     </ion-card>
-    <ion-button (click)="play()">
-      <ion-icon slot="icon-only" name="play-circle"></ion-icon>
-    </ion-button>
-    <ion-button (click)="stop()">
-      <ion-icon slot="icon-only" name="stop-circle"></ion-icon>
-    </ion-button>
-    <ion-button (click)="reset()">
-      <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
-    </ion-button>
+    <ion-card *ngIf="finished">
+      <ion-card-title>
+        <ion-card-header color="danger">
+          <ion-card-title><h1>TIMED OUT</h1></ion-card-title>
+        </ion-card-header>
+      </ion-card-title>
+    </ion-card>
   </div>
 </ion-content>
