@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { HorariosPageRoutingModule } from './horarios-routing.module';
 
 import { HorariosPage } from './horarios.page';
+import { HorarioComponent } from '../modals/horario/horario.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { HorariosPage } from './horarios.page';
     IonicModule,
     HorariosPageRoutingModule
   ],
-  declarations: [HorariosPage]
+  declarations: [HorariosPage , HorarioComponent]
 })
 export class HorariosPageModule {}
