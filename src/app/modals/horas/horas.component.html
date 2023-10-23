@@ -1,9 +1,9 @@
-<ion-modal id="example-modal" #modal trigger="nuevo-horario">
+<ion-modal id="example-modal" #modal trigger="nueva-hora">
   <ng-template>
     <ion-card class="fill">
       <ion-card-header class="ion-text-uppercase ion-text-center">
         <ion-toolbar [color]="primaryColor">
-            <h1>Nuevo Horario</h1>
+          <h1>Nuevo Horario</h1>
         </ion-toolbar>
       </ion-card-header>
       <ion-card-content>
@@ -12,10 +12,15 @@
             <ion-col class="ion-margin">
               <ion-card>
                 <ion-card-header>
-                  <ion-card-title  class="ion-text-center">Nombre</ion-card-title>
+                  <ion-card-title class="ion-text-center">Hora de inicio</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                 <ion-input type="text" placeholder="NuevoHorario"></ion-input>
+                  <ion-datetime-button datetime="horaInicio"></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime id="horaInicio" presentation="time"></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
                 </ion-card-content>
               </ion-card>
             </ion-col>
@@ -24,21 +29,23 @@
             <ion-col class="ion-margin">
               <ion-card>
                 <ion-card-header>
-                  <ion-card-title  class="ion-text-center">Dias a mostrar</ion-card-title>
+                  <ion-card-title class="ion-text-center">Hora de fin</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-select placeholder="Lunes a Domingo">
-                    <ion-select-option value="apple">Lunes a Viernes</ion-select-option>
-                    <ion-select-option value="banana">Lunes a Domingo</ion-select-option>
-                  </ion-select>
+                  <ion-datetime-button datetime="horaFin"></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime id="horaFin" presentation="time"></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
                 </ion-card-content>
               </ion-card>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="ion-margin">
-              <ion-button (click)="addHorario()" [color]="primaryColor" expand="block" shape="round">
-                Crear horario
+              <ion-button (click)="addRow()" [color]="primaryColor" expand="block" shape="round">
+                Crear franja horaria
               </ion-button>
             </ion-col>
           </ion-row>
