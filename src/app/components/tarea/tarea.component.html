@@ -31,9 +31,11 @@
         </ion-col>
       </ion-row>
       <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-col size="auto">
+        <ion-col>
           <ion-list>
             <ion-item>
+              
+              <ion-icon slot="start" aria-hidden="true" [name]="icono"></ion-icon>
               <ion-select (ionChange)="option($event)" aria-label="Icono" interface="action-sheet"
                 placeholder="Select icon">
                 <ion-select-option value="at-circle">Arroba</ion-select-option>
@@ -44,11 +46,6 @@
               </ion-select>
             </ion-item>
           </ion-list>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-item>
-            <ion-icon slot="start" aria-hidden="true" [name]="icono"></ion-icon>
-          </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
