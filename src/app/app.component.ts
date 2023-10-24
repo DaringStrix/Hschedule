@@ -22,6 +22,6 @@ export class AppComponent {
   activarGroupo() { }
 
   getHorarios(index: number){
-    return this.horarios[index].url? this.horarios[index].url : '/login';
+    return this.horarios[index].url? this.horarios[index].url : 'login';
   }
 }

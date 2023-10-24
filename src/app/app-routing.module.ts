@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: (new AppComponent).getHorarios(0),
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -15,9 +15,18 @@ const routes: Routes = [
   {
     path: 'grupos/:id',
     loadChildren: () => import('./grupos/grupos.module').then( m => m.GruposPageModule)
-  },  {
+  },
+  {
     path: 'herramientas',
     loadChildren: () => import('./herramientas/herramientas.module').then( m => m.HerramientasPageModule)
+  },
+  {
+    path: 'sign-up',
+    loadChildren: () => import('./auth/sign-up/sign-up.module').then( m => m.SignUpPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   }
 
 

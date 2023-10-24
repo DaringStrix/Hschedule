@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-uppercase ion-text-center">login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="fill">
+    <ion-card-content>
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col class="ion-margin">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title class="ion-text-center">User</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-input type="text" placeholder="usuarioX"></ion-input>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-margin">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title class="ion-text-center">Password</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-input type="password" placeholder="password"></ion-input>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-margin">
+            <ion-button (click)="iniciarSesion()" expand="block" shape="round">
+              Iniciar Sesión
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <a href="sign-up">Registrarse</a>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

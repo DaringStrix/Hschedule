@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { HerramientasPageRoutingModule } from './herramientas-routing.module';
 
 import { HerramientasPage } from './herramientas.page';
+import { ComponentsModule } from '../components/components.module';
+import { HeaderComponent } from '../components/header/header.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HerramientasPageRoutingModule
+    HerramientasPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [HerramientasPage]
 })

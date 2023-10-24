@@ -7,17 +7,20 @@ import { IonicModule } from '@ionic/angular';
 import { HorariosPageRoutingModule } from './horarios-routing.module';
 
 import { HorariosPage } from './horarios.page';
-import { HorarioComponent } from '../modals/horario/horario.component';
-import { HorasComponent } from '../modals/horas/horas.component';
-import { TareaComponent } from '../modals/tarea/tarea.component';
+import { HorarioComponent } from '../components/horario/horario.component';
+import { HorasComponent } from '../components/horas/horas.component';
+import { TareaComponent } from '../components/tarea/tarea.component';
+import { HeaderComponent } from '../components/header/header.component';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HorariosPageRoutingModule
+    HorariosPageRoutingModule,
+    ComponentsModule
   ],
-  declarations: [HorariosPage , HorarioComponent, HorasComponent, TareaComponent]
+  declarations: [HorariosPage]
 })
 export class HorariosPageModule {}

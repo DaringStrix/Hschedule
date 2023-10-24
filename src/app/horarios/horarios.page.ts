@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
-import { TareaComponent } from '../modals/tarea/tarea.component';
+import { TareaComponent } from '../components/tarea/tarea.component';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-horarios',
@@ -39,7 +40,7 @@ export class HorariosPage implements OnInit {
   }
   
   abrirHerramientas() {
-    this.navController.navigateForward('/herramientas')
+    this.navController.navigateForward((new AppComponent).getHorarios(0))
   }
 
   addHorario() {
