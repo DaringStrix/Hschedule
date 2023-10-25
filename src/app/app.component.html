@@ -1,11 +1,11 @@
 <ion-app>
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
-
+<app-logo size="100"></app-logo>
       <!-- Horarios -->
 
       <ion-toolbar>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label class="ion-text-uppercase ion-text-center">Horarios</ion-label>
         </ion-item>
       </ion-toolbar>
@@ -13,7 +13,7 @@
         <ion-col size="9">
           <ion-list id="horarios-list" class="transparent-background">
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[h.url]" lines="none" detail="false"
+              <ion-item lines="none" routerDirection="root" [routerLink]="[h.url]" lines="none" detail="false"
                 routerLinkActive="selected">
                 <ion-label>{{ h.title }}</ion-label>
               </ion-item>
@@ -27,7 +27,7 @@
 
       <!-- Grupos -->
       <ion-toolbar>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label class="ion-text-uppercase ion-text-center">Grupos</ion-label>
         </ion-item>
       </ion-toolbar>
@@ -35,7 +35,7 @@
         <ion-col size="9">
           <ion-list id="horarios-list" class="transparent-background">
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[g.url]" lines="none" detail="false"
+              <ion-item lines="none" routerDirection="root" [routerLink]="[g.url]" lines="none" detail="false"
                 routerLinkActive="selected">
                 <ion-label>{{ g.title }}</ion-label>
               </ion-item>
@@ -53,7 +53,7 @@
     </ion-content>
     <ion-footer>
       <ion-toolbar>
-        <ion-item>
+        <ion-item lines="none">
           <ion-label class="ion-text-uppercase ion-text-center">Cuentas</ion-label>
         </ion-item>
       </ion-toolbar>

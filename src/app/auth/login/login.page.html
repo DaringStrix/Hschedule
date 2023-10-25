@@ -4,47 +4,53 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-card class="fill">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
     <ion-card-content>
-      <ion-grid [fixed]="true">
-        <ion-row>
-          <ion-col class="ion-margin">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title class="ion-text-center">User</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-input type="text" placeholder="usuarioX"></ion-input>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-margin">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title class="ion-text-center">Password</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-input type="password" placeholder="password"></ion-input>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-margin">
-            <ion-button (click)="iniciarSesion()" expand="block" shape="round">
-              Iniciar Sesión
-            </ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-text-center">
-            <a href="sign-up">Registrarse</a>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <app-logo></app-logo>
+      <form [formGroup]="form" (keyup.enter)="iniciarSesion()">
+        <ion-item class="ion-margin" lines="none">
+          <ion-input type="text" label="User" labelPlacement="floating" autocomplete="true"
+            [formControl]="form.controls.user" placeholder="usuarioX"></ion-input>
+        </ion-item>
+        <ion-item class="ion-margin" lines="none">
+          <ion-input [type]="type" label="Password" labelPlacement="floating" [formControl]="form.controls.password"
+            placeholder="password"></ion-input>
+
+
+          <ion-button (click)="type =='password' ? type = 'text' : type = 'password'" fill="clear">
+            <ion-icon slot="icon-only" [name]=" type =='password' ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+
+          </ion-button>
+
+        </ion-item>
+      </form>
+      <ion-button [disabled]="this.form.invalid" class="ion-margin-end" (click)="iniciarSesion()" expand="block">
+        Iniciar Sesión
+      </ion-button>
+      <ion-button href="sign-up" expand="block" fill="clear" shape="round">
+        Registrarse
+      </ion-button>
     </ion-card-content>
   </ion-card>
+
+  <ion-card *ngIf="validate()">
+    <ion-card-content>
+      <ion-item *ngIf="form.controls.user.errors && form.controls.user.touched" lines="none">
+        <ion-text *ngIf="form.controls.user.errors?.['required']" color="danger">
+          Introduzca un usuario.
+        </ion-text>
+      </ion-item>
+      <ion-item *ngIf="form.controls.password.errors && form.controls.password.touched" lines="none">
+        <ion-text *ngIf="form.controls.password.errors?.['required']" color="danger">
+          Introduzca una contraseña.
+        </ion-text>
+        <ion-text *ngIf="form.controls.password.errors?.['pattern']" color="danger">
+          Introduzca una contraseña con mayúscula, minúscula, número y 8 de longitud como mínimo.
+        </ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+
 </ion-content>
