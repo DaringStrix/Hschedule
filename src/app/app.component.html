@@ -1,7 +1,7 @@
 <ion-app>
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
-<app-logo size="100"></app-logo>
+      <app-logo size="100"></app-logo>
       <!-- Horarios -->
 
       <ion-toolbar>
@@ -48,7 +48,7 @@
       </ion-row>
 
       <!-- Cuentas -->
-      
+
 
     </ion-content>
     <ion-footer>
@@ -57,10 +57,11 @@
           <ion-label class="ion-text-uppercase ion-text-center">Cuentas</ion-label>
         </ion-item>
       </ion-toolbar>
-      <ion-button (click)="cerrarSesion()" expand="block" color="danger">
-        Cerrar sesion
-      </ion-button>
-      
+      <ion-menu-toggle>
+        <ion-button (click)="cerrarSesion()" expand="block" color="danger">
+          Cerrar sesion
+        </ion-button>
+      </ion-menu-toggle>
     </ion-footer>
   </ion-menu>
   <ion-router-outlet id="main-content"></ion-router-outlet>

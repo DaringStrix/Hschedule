@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { UtilsService } from './services/utils.service';
+import { FirebaseService } from './services/firebase.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -6,22 +9,29 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public horarios = [
-    { title: 'Horario 1', url: '/horarios/horario 1'},
+    { title: 'Horario 1', url: '/horarios/horario 1' },
   ];
 
   public grupos = [
-    { title: 'Grupo 1', url: '/grupos/grupo 1'},
+    { title: 'Grupo 1', url: '/grupos/grupo 1' },
   ];
+
+  utsv = inject(UtilsService)
+  firebaseService = inject(FirebaseService);
 
   constructor() { }
 
-  cerrarSesion() { }
+  cerrarSesion() {
+    this.utsv.unsaveInLocalStorge('user')
+    this.firebaseService.singOut()
+    this.utsv.routerLink('/login')
+  }
 
   activarHorario() { }
 
   activarGroupo() { }
 
-  getHorarios(index: number){
-    return this.horarios[index].url? this.horarios[index].url : 'login';
+  getHorarios(index: number) {
+    return this.horarios[index].url ? this.horarios[index].url : 'login';
   }
 }

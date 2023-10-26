@@ -1,33 +1,46 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { NoAuthGuard } from './guards/no-auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
+    canActivate: [NoAuthGuard],
     pathMatch: 'full'
   },
   {
     path: 'horarios/:id',
-    loadChildren: () => import('./horarios/horarios.module').then( m => m.HorariosPageModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./horarios/horarios.module').then(m => m.HorariosPageModule)
   },
   {
     path: 'grupos/:id',
-    loadChildren: () => import('./grupos/grupos.module').then( m => m.GruposPageModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./grupos/grupos.module').then(m => m.GruposPageModule)
   },
   {
     path: 'herramientas',
-    loadChildren: () => import('./herramientas/herramientas.module').then( m => m.HerramientasPageModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./herramientas/herramientas.module').then(m => m.HerramientasPageModule)
   },
   {
     path: 'sign-up',
-    loadChildren: () => import('./auth/sign-up/sign-up.module').then( m => m.SignUpPageModule)
+    canActivate: [NoAuthGuard],
+    loadChildren: () => import('./auth/sign-up/sign-up.module').then(m => m.SignUpPageModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+    canActivate: [NoAuthGuard],
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule),
+  },
+  {
+    path: 'reset-password',
+    canActivate: [NoAuthGuard],
+    loadChildren: () => import('./auth/reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
   }
+
 
 
 ];
@@ -38,4 +51,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

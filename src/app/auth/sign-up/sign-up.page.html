@@ -12,7 +12,7 @@
       <form [formGroup]="form" (keyup.enter)="registrarSesion()">
 
         <ion-item class="ion-margin" lines="none">
-          <ion-input [formControl]="form.controls.user" type="text" label="User" labelPlacement="floating"
+          <ion-input [formControl]="form.controls.email" type="text" label="Email" labelPlacement="floating"
             placeholder="usuarioX"></ion-input>
         </ion-item>
         <ion-item class="ion-margin" lines="none">
@@ -40,9 +40,9 @@
   </ion-card>
   <ion-card *ngIf="validate()">
     <ion-card-content>
-      <ion-item *ngIf="form.controls.user.errors && form.controls.user.touched" lines="none">
-        <ion-text *ngIf="form.controls.user.errors?.['required']" color="danger">
-          Introduzca un usuario.
+      <ion-item *ngIf="form.controls.email.errors && form.controls.email.touched" lines="none">
+        <ion-text *ngIf="form.controls.email.errors?.['required'] || form.controls.email.errors?.['email']" color="danger">
+          Introduzca un email valido.
         </ion-text>
       </ion-item>
       <ion-item *ngIf="form.controls.password.errors && form.controls.password.touched" lines="none">

@@ -40,7 +40,7 @@ export class HorariosPage implements OnInit {
   }
   
   abrirHerramientas() {
-    this.navController.navigateForward((new AppComponent).getHorarios(0))
+    this.navController.navigateForward('/herramientas')
   }
 
   addHorario() {

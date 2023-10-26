@@ -10,8 +10,8 @@
       <app-logo></app-logo>
       <form [formGroup]="form" (keyup.enter)="iniciarSesion()">
         <ion-item class="ion-margin" lines="none">
-          <ion-input type="text" label="User" labelPlacement="floating" autocomplete="true"
-            [formControl]="form.controls.user" placeholder="usuarioX"></ion-input>
+          <ion-input type="text" label="Email" labelPlacement="floating" autocomplete="true"
+            [formControl]="form.controls.email" placeholder="usuarioX"></ion-input>
         </ion-item>
         <ion-item class="ion-margin" lines="none">
           <ion-input [type]="type" label="Password" labelPlacement="floating" [formControl]="form.controls.password"
@@ -25,6 +25,11 @@
 
         </ion-item>
       </form>
+
+      <ion-item button (click)="resetPasswd()">
+        <ion-label color="primary">Recuperar contraseña</ion-label>
+      </ion-item>
+
       <ion-button [disabled]="this.form.invalid" class="ion-margin-end" (click)="iniciarSesion()" expand="block">
         Iniciar Sesión
       </ion-button>
@@ -36,9 +41,9 @@
 
   <ion-card *ngIf="validate()">
     <ion-card-content>
-      <ion-item *ngIf="form.controls.user.errors && form.controls.user.touched" lines="none">
-        <ion-text *ngIf="form.controls.user.errors?.['required']" color="danger">
-          Introduzca un usuario.
+      <ion-item *ngIf="form.controls.email.errors && form.controls.email.touched" lines="none">
+        <ion-text *ngIf="form.controls.email.errors?.['required'] || form.controls.email.errors?.['email']" color="danger">
+          Introduzca un email valido.
         </ion-text>
       </ion-item>
       <ion-item *ngIf="form.controls.password.errors && form.controls.password.touched" lines="none">
