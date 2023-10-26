@@ -6,8 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    canActivate: [NoAuthGuard],
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -39,7 +38,12 @@ const routes: Routes = [
     path: 'reset-password',
     canActivate: [NoAuthGuard],
     loadChildren: () => import('./auth/reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   }
+
 
 
 

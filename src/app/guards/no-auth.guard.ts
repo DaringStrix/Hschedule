@@ -16,7 +16,7 @@ export class NoAuthGuard implements CanActivate {
     this.firebaseS.getAuth((user) => {
       if (user) {
         console.log('-----------------------------It isnt Autenticated-----------------------------' + JSON.stringify(user));
-        this.utilsService.routerLink('/horarios/horario 1')
+        this.utilsService.routerLink('/home')
         return false
 
       } else {
