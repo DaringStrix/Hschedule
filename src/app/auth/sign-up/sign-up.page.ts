@@ -32,20 +32,26 @@ export class SignUpPage implements OnInit {
 
 
 
-  registrarSesion() {
+  async registrarSesion() {
     if (this.form.invalid == false) {
-      this.firebaseSvc.signUp(this.form.value as User).then(res => { 
+
+      const loading = await this.utilService.loading()
+      await loading.present()
+
+      this.firebaseSvc.signUp(this.form.value as User).then(res => {
         let uid = res.user.uid
         this.form.controls.uid.setValue(uid)
         this.setUserInfo(uid)
-        
-       })
+
+      })
         .catch(e => {
 
           this.utilService.presentToast({
             message: "Usuario o contraseña incorrectos",
             duration: 1000
           })
+        }).finally(() => {
+          loading.dismiss()
         })
     }
 
@@ -54,13 +60,13 @@ export class SignUpPage implements OnInit {
     if (this.form.invalid == false) {
 
       let path = `users/${uid}`
-      delete this.form.value.password 
+      delete this.form.value.password
       delete this.form.value.reppassword
 
-      this.firebaseSvc.setDocument(path, this.form.value).then( async res => {
+      this.firebaseSvc.setDocument(path, this.form.value).then(async res => {
         this.utilService.saveInLocalStorge('user', this.form.value)
         this.form.reset()
-        })
+      })
         .catch(e => {
           this.utilService.presentToast({
             message: "Usuario o contraseña incorrectos",

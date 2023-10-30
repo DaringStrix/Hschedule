@@ -28,7 +28,8 @@ export class ResetPasswordPage implements OnInit {
 
   async recuperarPasswd() {
     if (this.form.invalid == false) {
-      console.log(this.form.value as User);
+      const loading = await this.utilService.loading()
+      await loading.present()
       
       this.firebaseSvc.sendReoveryEmail(this.form.value.email).then(res => {
       this.utilService.routerLink('/login')
@@ -47,6 +48,8 @@ export class ResetPasswordPage implements OnInit {
             message: "Usuario o contraseña incorrectos",
             duration: 1000
           })
+        }).finally(()=> {
+          loading.dismiss()
         })
     }
   } 

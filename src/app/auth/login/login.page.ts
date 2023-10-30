@@ -28,8 +28,9 @@ export class LoginPage implements OnInit {
 
   async iniciarSesion() {
     if (this.form.invalid == false) {
-      
-      this.firebaseSvc.signIn(this.form.value as User).then(res => {
+      const loading = await this.utilService.loading()
+      await loading.present()
+      this.firebaseSvc.signIn(this.form.value as User).then( async res => {
         this.getUserInfo(res.user.uid)
       })
         .catch(e => {
@@ -39,6 +40,8 @@ export class LoginPage implements OnInit {
             message: "Usuario o contraseña incorrectos",
             duration: 1000
           })
+        }).finally(()=> {
+          loading.dismiss()
         })
     }
   }

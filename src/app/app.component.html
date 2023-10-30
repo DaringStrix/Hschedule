@@ -13,7 +13,7 @@
         <ion-col size="9">
           <ion-list id="horarios-list" class="transparent-background">
             <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" routerDirection="root" [routerLink]="[h.url]" lines="none" detail="false"
+              <ion-item lines="none" routerDirection="root" [routerLink]="h.url" lines="none" detail="false"
                 routerLinkActive="selected">
                 <ion-label>{{ h.title }}</ion-label>
               </ion-item>
@@ -52,10 +52,11 @@
 
     </ion-content>
     <ion-footer>
-      <ion-toolbar>
+      <ion-toolbar class="ion-text-center ion-padding-bottom">
         <ion-item lines="none">
-          <ion-label class="ion-text-uppercase ion-text-center">Cuentas</ion-label>
+          <ion-label class="ion-text-uppercase ion-text-center">Cuenta</ion-label>
         </ion-item>
+        <ion-note *ngIf="cuenta">{{cuenta}}</ion-note>
       </ion-toolbar>
       <ion-menu-toggle>
         <ion-button (click)="cerrarSesion()" expand="block" color="danger">

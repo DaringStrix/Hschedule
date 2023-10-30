@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar class="ion-padding ion-text-center" [color]="primaryColor">
+    <ion-button (click)="dismiss()" slot="start" fill="clear" color="dark">
+      <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+    </ion-button>
+    <ion-title>Nueva Tarea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="fill">
+    <ion-card-content>
+      <ion-item>
+        <ion-input type="text" label="Nombre:" labelPlacement="floating" placeholder="Hacer tarea de algo"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-padding-top">
+        <ion-textarea label="Descripción" labelPlacement="floating"
+          placeholder="Descripción detallada de la tarea."></ion-textarea>
+      </ion-item>
+
+      <ion-item class="ion-padding-top">
+        <ion-icon slot="start" aria-hidden="true" [name]="icono"></ion-icon>
+        <ion-select (ionChange)="option($event)" aria-label="Icono" interface="action-sheet" placeholder="Select icon">
+          <ion-select-option value="at-circle">Arroba</ion-select-option>
+          <ion-select-option value="balloon">Globo</ion-select-option>
+          <ion-select-option value="basketball">Pelota</ion-select-option>
+          <ion-select-option value="bandage">Tirita</ion-select-option>
+          <ion-select-option value="earth">Planeta tierra</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-button class="ion-margin" (click)="addTarea()" [color]="primaryColor" expand="block" shape="round">
+    Crear tarea
+  </ion-button>
+</ion-footer>

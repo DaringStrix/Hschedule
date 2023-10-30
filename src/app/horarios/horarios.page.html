@@ -1,5 +1,4 @@
-
-<app-header [title]="horario"/>
+<app-header [title]="horario" />
 <div id="fabsycabezera">
   <!-- color picker -->
   <ion-fab vertical="top" horizontal="end" slot="fixed">
@@ -27,62 +26,57 @@
 
   <!-- boton nuevo horario -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [color]='primaryColor' id="nuevo-horario">
+    <ion-fab-button (click)="addNewHorario()" id="nuevo-horario" [color]='primaryColor'>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
-  <!-- cabezera tabla -->
-  <ion-grid>
-    <ion-row>
-      <ion-col size="1.5">
-        <ion-item>
-          <ion-label class="ion-text-center">HORAS</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="1.5" *ngFor="let dia of diasSemana">
-        <ion-item>
-          <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
-        </ion-item>
-      </ion-col>
-
-    </ion-row>
-  </ion-grid>
 </div>
 
-<ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="1.5">
-        <ion-item>
-          <ion-label class="ion-text-center">0000</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="1.5" *ngFor="let dia of diasSemana">
-        <ion-item class="ion-justify-content-center" *ngIf="false">
-          <ion-label>{{dia}}</ion-label>
-        </ion-item>
-        <!-- añadir tarea -->
-        <ion-button (click)="abrirTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="clear">
-          <ion-icon slot="icon-only" name="add"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <!-- boton nueva franja horaria -->
-        <ion-button id="nueva-hora" expand="block" [color]='primaryColor'>
-          <ion-icon slot="icon-only" name="add"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 
-  <!-- nuevo horario -->
-  <app-horario [primaryColor]="primaryColor" [addHorario]="addHorario"></app-horario>
-
-  <!-- nueva franja horaria -->
-  <app-horas [primaryColor]="primaryColor" [addRow]="addRow"></app-horas>
-
-
+<ion-content scrollX="true">
+  <!-- cabezera tabla -->
+  <ion-card class="max-content">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col [size]="colSize">
+            <ion-item class="max-content">
+              <ion-label class="ion-text-center">HORAS</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col  [size]="colSize " *ngFor="let dia of diasSemana">
+            <ion-item class="max-content">
+              <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col [size]="colSize">
+            <ion-item class="max-content">
+              <ion-label class="ion-text-center">0000</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col [size]="colSize" *ngFor="let dia of diasSemana">
+            <ion-item  class="max-content" class="ion-justify-content-center" *ngIf="false">
+              <ion-label>{{dia}}</ion-label>
+            </ion-item>
+            <!-- añadir tarea -->
+            <ion-button (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <!-- boton nueva franja horaria -->
+            <ion-button (click)="addNewHora()" id="nueva-hora" expand="block" [color]='primaryColor'>
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

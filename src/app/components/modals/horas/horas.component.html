@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="ion-padding ion-text-center" [color]="primaryColor">
+    <ion-button (click)="dismiss()" slot="start" fill="clear" color="dark">
+      <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+    </ion-button>
+    <ion-title>Nueva franja horaria</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="fill">
+    <ion-card-content>
+
+      <ion-title class="ion-text-center">Hora de inicio</ion-title>
+
+      <ion-datetime-button class="ion-padding-top ion-padding-bottom" datetime="horaInicio"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="horaInicio" presentation="time"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+
+
+      <ion-title class="ion-text-center">Hora de fin</ion-title>
+
+      <ion-datetime-button class="ion-padding-top" datetime="horaFin"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="horaFin" presentation="time"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="addRow()" [color]="primaryColor" expand="block" shape="round">
+    Crear franja horaria
+  </ion-button>
+</ion-footer>
