@@ -1,4 +1,4 @@
-export interface Horarios{
+export interface Horario{
     uid: string,
     title: string,
     active: boolean,

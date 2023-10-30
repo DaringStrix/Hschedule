@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { UtilsService } from './services/utils.service';
 import { FirebaseService } from './services/firebase.service';
 import { HorariosService } from './services/horarios.service';
-import { Horarios } from './models/horario.model';
+import { Horario } from './models/horario.model';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ import { Horarios } from './models/horario.model';
 })
 export class AppComponent implements OnInit {
 
-  public horarios: Horarios[];
+  public horarios: Horario[];
 
   public grupos = [
     { title: 'Grupo 1', url: '/grupos/grupo 1' },

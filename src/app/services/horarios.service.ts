@@ -2,14 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { UtilsService } from './utils.service';
 import { User } from '../models/user.model';
-import { Horarios } from '../models/horario.model';
+import { Horario } from '../models/horario.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HorariosService {
 
-  public horarios : Horarios[] = [];
+  public horarios : Horario[] = [];
   constructor() { }
 
   utilsService = inject(UtilsService);
@@ -19,16 +19,16 @@ export class HorariosService {
     return this.utilsService.getFromLocalStorge('user');
   }
 
-  async getHorarios(): Promise<Horarios[]> {
+  async getHorarios(): Promise<Horario[]> {
     let path = `users/${this.user().uid}/horarios`;
 
     const loading = await this.utilsService.loading();
 
     await loading.present();
-    const querySnapshot = this.firebaseService.getDoc(path);
+    const querySnapshot = this.firebaseService.getDocs(path);
 
     (await querySnapshot).forEach((doc) => {
-      const elemnt: Horarios =
+      const elemnt: Horario =
       {
         uid: doc.id,
         title: doc.data()['name'],
@@ -40,7 +40,7 @@ export class HorariosService {
       
       this.horarios.push(elemnt)
     });
-    
+
     this.utilsService.saveInLocalStorge('horarios', this.horarios)
 
     loading.dismiss()

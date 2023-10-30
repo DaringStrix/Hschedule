@@ -6,9 +6,8 @@ import { UtilsService } from '../services/utils.service';
 import { HorasComponent } from '../components/modals/horas/horas.component';
 import { HorarioComponent } from '../components/modals/horario/horario.component';
 import { User } from '../models/user.model';
-import { HorariosService } from '../services/horarios.service';
 import { FirebaseService } from '../services/firebase.service';
-import { Horarios } from '../models/horario.model';
+import { Horario } from '../models/horario.model';
 
 @Component({
   selector: 'app-horarios',
@@ -18,14 +17,14 @@ import { Horarios } from '../models/horario.model';
 export class HorariosPage implements OnInit {
   private navController = inject(NavController)
   private utilsService = inject(UtilsService)
-  private horariosService = inject(HorariosService)
   private firebaseService = inject(FirebaseService)
-  
+
   public horario: string;
-  public horarioActual: Horarios;
+  public horarioActual: Horario;
   public primaryColor: string = 'primary';
-  diasSemana: string[]
-  colSize: number
+  diasSemana: string[];
+  colSize: number;
+  path: string;
 
   private activatedRoute = inject(ActivatedRoute);
 
@@ -35,22 +34,24 @@ export class HorariosPage implements OnInit {
     return this.utilsService.getFromLocalStorge('user')
   }
 
-  gethorarioActual(): Horarios {
+  gethorarioActual(): Horario {
     return this.utilsService.getFromLocalStorge('horarios').find(({ title }) => title === this.horario)
   }
 
   ngOnInit() {
     this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.primaryColor = this.horariosService.getColor(this.horario);
     this.horarioActual = this.gethorarioActual()
-    this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] :['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
+    this.path = `users/${this.user().uid}/horarios/${this.horarioActual.uid}`;
+    this.firebaseService.getDocument(this.path).then((h: Horario) => {
+      this.primaryColor = h.color
+    })
+    this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
     this.colSize = this.diasSemana.length == 7 ? 1.5 : 2
   }
 
   changeColor(color: string) {
     this.primaryColor = color
-    let path = `users/${this.user().uid}/horarios/${this.horarioActual.uid}`
-    this.firebaseService.updateDoc(path, {color: this.primaryColor})
+    this.firebaseService.updateDoc(this.path, { color: this.primaryColor })
   }
 
   abrirHerramientas() {

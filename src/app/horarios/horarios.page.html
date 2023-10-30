@@ -1,7 +1,29 @@
-<app-header [title]="horario" />
-<div id="fabsycabezera">
+<app-header [title]="horario">
+</app-header>
+
+<ion-content scrollX="true" class="ion-padding">
+<!-- ///////////////////////cabezera tabla/////////////////////// -->
+  <ion-header class="superglue">
+    <ion-item lines="none" class="max-content">
+      <ion-grid>
+        <ion-row>
+          <ion-col [size]="colSize">
+            <ion-item>
+              <ion-label class="ion-text-center">HORAS</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col [size]="colSize " *ngFor="let dia of diasSemana">
+            <ion-item>
+              <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-header>
+<!-- ////////////////////////////FABs//////////////////////////// -->
   <!-- color picker -->
-  <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab vertical="top" horizontal="end" [edge]="true" slot="fixed">
     <ion-fab-button color="light">
       <ion-icon name="color-palette"></ion-icon>
     </ion-fab-button>
@@ -30,53 +52,34 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</div>
 
-
-<ion-content scrollX="true">
-  <!-- cabezera tabla -->
-  <ion-card class="max-content">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col [size]="colSize">
-            <ion-item class="max-content">
-              <ion-label class="ion-text-center">HORAS</ion-label>
-            </ion-item>
-          </ion-col>
-          <ion-col  [size]="colSize " *ngFor="let dia of diasSemana">
-            <ion-item class="max-content">
-              <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-grid>
-        <ion-row>
-          <ion-col [size]="colSize">
-            <ion-item class="max-content">
-              <ion-label class="ion-text-center">0000</ion-label>
-            </ion-item>
-          </ion-col>
-          <ion-col [size]="colSize" *ngFor="let dia of diasSemana">
-            <ion-item  class="max-content" class="ion-justify-content-center" *ngIf="false">
-              <ion-label>{{dia}}</ion-label>
-            </ion-item>
-            <!-- añadir tarea -->
-            <ion-button (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
-              <ion-icon slot="icon-only" name="add"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <!-- boton nueva franja horaria -->
-            <ion-button (click)="addNewHora()" id="nueva-hora" expand="block" [color]='primaryColor'>
-              <ion-icon slot="icon-only" name="add"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+<!-- /////////////////////////////////////cuerpo///////////////////////////////////// -->
+  <ion-item class="max-content ion-margin-top">
+    <ion-grid>
+      <ion-row>
+        <ion-col [size]="colSize">
+          <ion-item>
+            <ion-label class="ion-text-center">0000</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col [size]="colSize" *ngFor="let dia of diasSemana">
+          <ion-item class="ion-justify-content-center" *ngIf="false">
+            <ion-label>{{dia}}</ion-label>
+          </ion-item>
+          <!-- añadir tarea -->
+          <ion-button (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <!-- boton nueva franja horaria -->
+          <ion-button (click)="addNewHora()" id="nueva-hora" expand="block" [color]='primaryColor'>
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
 </ion-content>

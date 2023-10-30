@@ -57,7 +57,7 @@ export class FirebaseService {
   }
 
 
-  async getDoc(path: string){
+  async getDocs(path: string){
     return await getDocs(query(collection(getFirestore(), path)))
   }
 
