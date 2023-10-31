@@ -56,10 +56,10 @@
 <!-- /////////////////////////////////////cuerpo///////////////////////////////////// -->
   <ion-item class="max-content ion-margin-top">
     <ion-grid>
-      <ion-row>
-        <ion-col [size]="colSize">
-          <ion-item>
-            <ion-label class="ion-text-center">0000</ion-label>
+      <ion-row *ngFor="let horas of franjasHorarias">
+        <ion-col class="max-height" [size]="colSize">
+          <ion-item lines="none" class="ion-text-center">
+            <ion-label class="ion-text-wrap">{{horas.horainicio}}<br>{{horas.horafin}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col [size]="colSize" *ngFor="let dia of diasSemana">
@@ -67,7 +67,7 @@
             <ion-label>{{dia}}</ion-label>
           </ion-item>
           <!-- añadir tarea -->
-          <ion-button (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
+          <ion-button class="max-height" (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
             <ion-icon slot="icon-only" name="add"></ion-icon>
           </ion-button>
         </ion-col>

@@ -16,7 +16,7 @@
       <ion-datetime-button class="ion-padding-top ion-padding-bottom" datetime="horaInicio"></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="horaInicio" presentation="time"></ion-datetime>
+          <ion-datetime [formControl]="form.controls.horainicio" id="horaInicio" presentation="time"></ion-datetime>
         </ng-template>
       </ion-modal>
 
@@ -26,7 +26,7 @@
       <ion-datetime-button class="ion-padding-top" datetime="horaFin"></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="horaFin" presentation="time"></ion-datetime>
+          <ion-datetime [formControl]="form.controls.horafin" id="horaFin" presentation="time"></ion-datetime>
         </ng-template>
       </ion-modal>
 
@@ -35,7 +35,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button (click)="addRow()" [color]="primaryColor" expand="block" shape="round">
+  <ion-button (click)="addHora()" [color]="primaryColor" expand="block" shape="round">
     Crear franja horaria
   </ion-button>
 </ion-footer>

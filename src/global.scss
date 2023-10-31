@@ -52,7 +52,9 @@ ion-thumbnail {
       width: 950px;
    }
 }
-
+.max-height {
+   height: max-content;
+}
 .superglue {
    position: sticky;
    top: 0;
