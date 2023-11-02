@@ -30,17 +30,17 @@ export class LoginPage implements OnInit {
     if (this.form.invalid == false) {
       const loading = await this.utilService.loading()
       await loading.present()
-      this.firebaseSvc.signIn(this.form.value as User).then( async res => {
+      this.firebaseSvc.signIn(this.form.value as User).then(async res => {
         this.getUserInfo(res.user.uid)
       })
         .catch(e => {
           console.log(e);
-          
+
           this.utilService.presentToast({
             message: "Usuario o contraseña incorrectos",
             duration: 1000
           })
-        }).finally(()=> {
+        }).finally(() => {
           loading.dismiss()
         })
     }
@@ -57,27 +57,34 @@ export class LoginPage implements OnInit {
     if (this.form.invalid == false) {
 
       let path = `users/${uid}`
-
-      this.firebaseSvc.getDocument(path).then( (user:User) => {
+      const loading = await this.utilService.loading()
+      await loading.present()
+      let theUser: User
+      this.firebaseSvc.getDocument(path).then((user: User) => {
         this.utilService.saveInLocalStorge('user', user)
         this.form.reset()
-
-        this.utilService.presentToast({
-            message: `Entrando como ${user.email}`,
-            duration: 1000
-          })
-        })
+        theUser = user
+      })
         .catch(e => {
           this.utilService.presentToast({
             message: "Usuario o contraseña incorrectos",
             duration: 1000
           })
+        }).finally(() => {
+
+          this.utilService.presentToast({
+            message: `Entrando como ${theUser.email}`,
+            duration: 1000
+          })
+          window.location.reload()
+          loading.dismiss()
+
         })
     }
   }
-  
-  resetPasswd(){
+
+  resetPasswd() {
     this.utilService.routerLink('/reset-password')
-    
+
   }
 }

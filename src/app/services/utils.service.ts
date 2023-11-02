@@ -37,6 +37,9 @@ export class UtilsService {
   unsaveInLocalStorge(key: string) {
     return localStorage.removeItem(key)
   }
+  clearLocalStorge() {
+    return localStorage.clear()
+  }
 
   loading(){
     return this.loadingController.create({spinner: 'lines'})

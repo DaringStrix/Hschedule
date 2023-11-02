@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { TareaComponent } from '../components/modals/tarea/tarea.component';
@@ -10,6 +10,8 @@ import { FirebaseService } from '../services/firebase.service';
 import { Horario } from '../models/horario.model';
 import { Horas } from '../models/horas.model';
 import { HorasService } from '../services/horas.service';
+import { TareasService } from '../services/tareas.service';
+import { Tarea } from '../models/tarea.model';
 
 @Component({
   selector: 'app-horarios',
@@ -17,47 +19,97 @@ import { HorasService } from '../services/horas.service';
   styleUrls: ['./horarios.page.scss'],
 })
 export class HorariosPage implements OnInit {
+
   private navController = inject(NavController)
   private utilsService = inject(UtilsService)
   private firebaseService = inject(FirebaseService)
   private horasService = inject(HorasService)
+  private tareasService = inject(TareasService)
+  private activatedRoute = inject(ActivatedRoute);
 
   public horario: string;
   public horarioActual: Horario;
   public franjasHorarias: Horas[] = [];
+  public tareas: Tarea[] = [];
   public primaryColor: string = 'primary';
   public diasSemana: string[];
   public colSize: number;
   public path: string;
-
-  private activatedRoute = inject(ActivatedRoute);
+  public tabla: any[][] = []
+  public franjaActual = []
 
   constructor() { }
-
-  user(): User {
-    return this.utilsService.getFromLocalStorge('user')
-  }
-
-  gethorarioActual(): Horario {
-    return this.utilsService.getFromLocalStorge('horarios').find(({ title }) => title === this.horario)
-  }
 
   async ngOnInit() {
     this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;
     this.horarioActual = this.gethorarioActual()
+
     this.path = `users/${this.user().uid}/horarios/${this.horarioActual.uid}`;
 
-    this.firebaseService.getDocument(this.path).then((h: Horario) => {
-      this.primaryColor = h.color
-    })
-    this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
-    this.colSize = this.diasSemana.length == 7 ? 1.5 : 2
+    this.firebaseService.getDocument(this.path).then((h: Horario) => { this.primaryColor = h.color })
 
-    await this.horasService.getHoras(this.path).then(res => { this.franjasHorarias = res });
-    
+    this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
+    this.colSize = this.diasSemana.length == 7 ? 1.55 : 2.2
+
+    await this.getHoras();
+    await this.getTareas();
+    this.crearTabla();
+    this.getTarea(0, 0)
+
+  }
+
+  private crearTabla() {
+    let horas = []
+    this.franjasHorarias.forEach(hora => {
+      horas.push({
+        horaInicio: hora.horainicio,
+        horaFin: hora.horafin
+      })
+    });
+    this.diasSemana.forEach(dia => {
+      this.tabla.push([dia, horas]);
+    });
+  }
+
+  private user(): User {
+    return this.utilsService.getFromLocalStorge('user')
+  }
+
+  private gethorarioActual(): Horario {
+    return this.utilsService.getFromLocalStorge('horarios').find(({ title }) => title === this.horario)
+  }
+
+  private async getHoras() {
+    await this.horasService.getHoras(this.path).then(res => { this.franjasHorarias = res; });
+
     this.franjasHorarias.sort((a, b) => {
       return a.horafin.localeCompare(b.horainicio);
+    });
+  }
+
+
+  private async getTareas() {
+
+    let franjas = []
+    let tasks: Promise<Tarea[]>
+    await this.franjasHorarias.forEach(franja => { franjas.push(franja.uid) })
+    franjas.forEach(uid => {
+      tasks = this.tareasService.getTareas(this.path + `/horas/${uid}`).then(res => { return res })
     })
+    this.tareas = await tasks
+
+  }
+
+  getTarea(row: number, col: number) {
+
+    let tarea = this.tareas.find(t => 
+      t.dia == this.tabla[col][0] && t.horaI == this.tabla[col][1][row].horaInicio && t.horaF == this.tabla[col][1][row].horaFin
+    )
+
+    if (tarea) {
+      return tarea
+    }
+
   }
 
   changeColor(color: string) {
@@ -89,15 +141,25 @@ export class HorariosPage implements OnInit {
       cssClass: 'modal-height'
     })
   }
+  log() {
+    console.log('***************************************************************');
 
-  addNewTarea() {
+  }
+  addNewTarea(idhoras: string, dia: string, row: number, col: number) {
     this.utilsService.presentModal({
       component: TareaComponent,
       componentProps: {
-        primaryColor: this.primaryColor
+        primaryColor: this.primaryColor,
+        path: this.path + `/horas/${idhoras}/tareas`,
+        dia: dia
       },
       cssClass: 'modal-height'
     })
+  }
 
+  abrirEnlace(url: string){
+    if (url!='' && url.includes('.')) {
+      window.open(url, '_blank')
+    }
   }
 }

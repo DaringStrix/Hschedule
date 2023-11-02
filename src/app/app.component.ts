@@ -11,7 +11,7 @@ import { Horario } from './models/horario.model';
 })
 export class AppComponent implements OnInit {
 
-  public horarios: Horario[];
+  public horarios: Horario[] = [];
 
   public grupos = [
     { title: 'Grupo 1', url: '/grupos/grupo 1' },
@@ -25,17 +25,16 @@ export class AppComponent implements OnInit {
 
   cuenta!: string;
 
-  
-
   constructor() { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
 
     if (this.isCuenta != null) {
-      this.cuenta = JSON.parse(localStorage.getItem('user')).email;
+      this.cuenta = await JSON.parse(localStorage.getItem('user')).email;
     }
-
-    this.horariosService.getHorarios().then(res => {this.horarios = res});
+    if (this.horarios.toString() == '') {
+      await this.horariosService.getHorarios().then(res => {this.horarios = res});
+    }
   }
 
   cerrarSesion() {

@@ -10,18 +10,26 @@
 <ion-content>
   <ion-card class="fill">
     <ion-card-content>
+      <!-- Titulo -->
       <ion-item>
-        <ion-input type="text" label="Nombre:" labelPlacement="floating" placeholder="Hacer tarea de algo"></ion-input>
+        <ion-input [formControl]="form.controls.title" type="text" label="Nombre:" labelPlacement="floating"
+          placeholder="Hacer tarea de algo"></ion-input>
       </ion-item>
-
+      <!-- Descripcion -->
       <ion-item class="ion-padding-top">
-        <ion-textarea label="Descripción" labelPlacement="floating"
+        <ion-textarea [formControl]="form.controls.description" label="Descripción" labelPlacement="floating"
           placeholder="Descripción detallada de la tarea."></ion-textarea>
       </ion-item>
-
+      <!-- Enlace -->
       <ion-item class="ion-padding-top">
-        <ion-icon slot="start" aria-hidden="true" [name]="icono"></ion-icon>
-        <ion-select (ionChange)="option($event)" aria-label="Icono" interface="action-sheet" placeholder="Select icon">
+        <ion-input [formControl]="form.controls.enlace" type="text" label="Enlace opcional" labelPlacement="floating"
+          placeholder="Enlace opcional al hacer click"></ion-input>
+      </ion-item>
+      <!-- Icono -->
+      <ion-item class="ion-padding-top">
+        <ion-icon slot="start" aria-hidden="true" [name]="form.controls.icono.value"></ion-icon>
+        <ion-select [formControl]="form.controls.icono" aria-label="Icono" interface="action-sheet"
+          placeholder="Select icon">
           <ion-select-option value="at-circle">Arroba</ion-select-option>
           <ion-select-option value="balloon">Globo</ion-select-option>
           <ion-select-option value="basketball">Pelota</ion-select-option>
@@ -30,6 +38,18 @@
         </ion-select>
       </ion-item>
     </ion-card-content>
+    <div *ngIf="validate()" class="ion-margin ion-padding">
+      <ion-item *ngIf="form.controls.title.errors && form.controls.title.touched" lines="none" color="danger">
+        <ion-text *ngIf="form.controls.title.errors?.['required']">
+          Introduzca un titulo.
+        </ion-text>
+      </ion-item>
+      <ion-item class="ion-margin-top" *ngIf="form.controls.description.errors && form.controls.description.touched" lines="none" color="danger">
+        <ion-text *ngIf="form.controls.description.errors?.['required']">
+          Introduzca una descripcion.
+        </ion-text>
+      </ion-item>
+    </div>
   </ion-card>
 </ion-content>
 

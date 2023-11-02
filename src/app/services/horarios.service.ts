@@ -41,7 +41,11 @@ export class HorariosService {
       this.horarios.push(elemnt)
     });
 
-    this.utilsService.saveInLocalStorge('horarios', this.horarios)
+    if (this.utilsService.getFromLocalStorge('horarios') == null) {
+      this.utilsService.saveInLocalStorge('horarios', this.horarios)
+      console.log('Añadidodasdasd//////////////////');
+      
+    }
 
     loading.dismiss()
 

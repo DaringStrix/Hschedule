@@ -62,6 +62,7 @@ export class HorarioComponent implements OnInit {
           })
         }).finally(()=> {
           loading.dismiss()
+          window.location.reload()
         })
     }
   }

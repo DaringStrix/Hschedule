@@ -47,16 +47,79 @@ ion-thumbnail {
    }
 }
 
-@media (max-width:945px) {
-   .max-content {
-      width: 950px;
+
+@media (max-width:1920px) {
+   ion-app {
+      zoom: calc(1920 / 1920);
+   }
+   .max-content{
+      width: 100%;
+      height: max-content;
    }
 }
-.max-height {
-   height: max-content;
+@media (max-width:1600px) {
+   ion-app {
+      zoom: calc(1600 / 1920);
+   }
+   .max-content{
+      width: 150%;
+      height: max-content;
+   }
 }
+@media (max-width:1275px) {
+   ion-app {
+      zoom: calc(1275 / 1920);
+   }
+   .max-content{
+      width: 150%;
+      height: max-content;
+   }
+}
+@media (max-width:968px) {
+   ion-app {
+      zoom: calc(968 / 1920);
+   }
+   .max-content{
+      width: 200%;
+      height: max-content;
+   }
+}
+
+@media (max-width:400px) {
+   ion-app {
+      zoom: calc(800 / 1920);
+   }
+   .max-content{
+      width: 200%;
+      height: max-content;
+   }
+}
+
+
+
 .superglue {
    position: sticky;
    top: 0;
-   border: 1px solid #222;
+   border: 1px solid var(--ion-color-grey);
+}
+
+.cell {
+   height: 150px;
+   width: 250px;
+   margin-bottom: 5px;
+}
+
+.cell>* {
+   height: 150px;
+}
+
+.horas {
+   width: 120px !important;
+   max-width: 120px !important;
+}
+
+.tarea-icon {
+   float: left !important;
+   margin-top: -100px !important;
+   margin-left: auto;
 }

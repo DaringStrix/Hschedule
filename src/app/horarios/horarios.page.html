@@ -1,13 +1,13 @@
 <app-header [title]="horario">
 </app-header>
 
-<ion-content scrollX="true" class="ion-padding">
-<!-- ///////////////////////cabezera tabla/////////////////////// -->
+<ion-content scrollY="true" scrollX="true" class="ion-padding">
+  <!-- ///////////////////////cabezera tabla/////////////////////// -->
   <ion-header class="superglue">
     <ion-item lines="none" class="max-content">
       <ion-grid>
         <ion-row>
-          <ion-col [size]="colSize">
+          <ion-col class="horas" [size]="colSize">
             <ion-item>
               <ion-label class="ion-text-center">HORAS</ion-label>
             </ion-item>
@@ -21,7 +21,7 @@
       </ion-grid>
     </ion-item>
   </ion-header>
-<!-- ////////////////////////////FABs//////////////////////////// -->
+  <!-- ////////////////////////////FABs//////////////////////////// -->
   <!-- color picker -->
   <ion-fab vertical="top" horizontal="end" [edge]="true" slot="fixed">
     <ion-fab-button color="light">
@@ -53,27 +53,41 @@
     </ion-fab-button>
   </ion-fab>
 
-<!-- /////////////////////////////////////cuerpo///////////////////////////////////// -->
+  <!-- /////////////////////////////////////cuerpo///////////////////////////////////// -->
   <ion-item class="max-content ion-margin-top">
     <ion-grid>
-      <ion-row *ngFor="let horas of franjasHorarias">
-        <ion-col class="max-height" [size]="colSize">
+      <ion-row *ngFor="let horas of franjasHorarias; let row = index">
+        <ion-col class="horas" [size]="colSize">
           <ion-item lines="none" class="ion-text-center">
             <ion-label class="ion-text-wrap">{{horas.horainicio}}<br>{{horas.horafin}}</ion-label>
           </ion-item>
         </ion-col>
-        <ion-col [size]="colSize" *ngFor="let dia of diasSemana">
-          <ion-item class="ion-justify-content-center" *ngIf="false">
-            <ion-label>{{dia}}</ion-label>
-          </ion-item>
+        <ion-col class="ion-justify-content-center ion-align-items-center cell" [size]="colSize"
+          *ngFor="let dia of diasSemana; let col = index">
           <!-- añadir tarea -->
-          <ion-button class="max-height" (click)="addNewTarea()" id="nueva-tarea" [color]='primaryColor' expand="block" fill="outline">
+          <ion-button (click)="addNewTarea(horas.uid, dia, row, col)" id="nueva-tarea" [color]='primaryColor'
+            expand="block" fill="outline" *ngIf="!getTarea(row,col)">
             <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+          <!-- tarea -->
+          <ion-button *ngIf="getTarea(row,col)" (click)="abrirEnlace(getTarea(row,col)['enlace'])"
+            expand="block" fill="outline" [color]="primaryColor">
+            <ion-list style="min-width: 90%;">
+              <ion-item lines="none" style="min-width: 90%;">
+                <ion-label class="ion-text-capitalize ion-text-wrap">
+                  {{getTarea(row,col)['title']}}
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-textarea disabled="true" [placeholder]="getTarea(row,col)['description']"></ion-textarea>
+              </ion-item>
+            </ion-list>
+            <ion-icon slot="start" size="large" class="tarea-icon" [name]="getTarea(row,col)['icono']"></ion-icon>
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col size="12">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="11.5">
           <!-- boton nueva franja horaria -->
           <ion-button (click)="addNewHora()" id="nueva-hora" expand="block" [color]='primaryColor'>
             <ion-icon slot="icon-only" name="add"></ion-icon>
