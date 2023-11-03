@@ -107,10 +107,17 @@ export class HorariosPage implements OnInit {
     await this.horasService.getHoras(this.path).then(res => { this.franjasHorarias = res; });
 
     this.franjasHorarias.sort((a, b) => {
-      return a.horafin.localeCompare(b.horainicio);
+      const horainicioA = a.horainicio;
+      const horainicioB = b.horainicio;
+      const horafinA = a.horafin;
+      const horafinB = b.horafin;
+    
+      if (horainicioA.localeCompare(horainicioB) !== 0) {
+        return horainicioA.localeCompare(horainicioB);
+      }
+      return horafinA.localeCompare(horafinB);
     });
   }
-
 
   private async getTareas() {
 
