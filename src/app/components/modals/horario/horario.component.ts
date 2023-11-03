@@ -13,7 +13,7 @@ import { User } from 'src/app/models/user.model';
 export class HorarioComponent implements OnInit {
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required]),
     mode: new FormControl('lundom'),
     color: new FormControl('primary'),
     active: new FormControl('true'),
@@ -47,7 +47,7 @@ export class HorarioComponent implements OnInit {
         this.dismiss({ success: true })
 
         this.utilsService.presentToast({
-          message: `Creado nuevo horario ${this.form.controls.name.value}`,
+          message: `Creado nuevo horario ${this.form.controls.title.value}`,
           duration: 1000,
           color: 'success'
         })

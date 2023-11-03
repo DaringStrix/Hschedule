@@ -1,9 +1,0 @@
-.transparent-background {
-  background-color: transparent;
-}
-
-.transparent-background ion-item,
-.transparent-background ion-item .item-inner {
-  background-color: transparent;
-  --ion-item-background: transparent; /* Override Ionic's background color */
-}

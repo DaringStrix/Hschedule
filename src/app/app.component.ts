@@ -3,6 +3,7 @@ import { UtilsService } from './services/utils.service';
 import { FirebaseService } from './services/firebase.service';
 import { HorariosService } from './services/horarios.service';
 import { Horario } from './models/horario.model';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -11,29 +12,40 @@ import { Horario } from './models/horario.model';
 })
 export class AppComponent implements OnInit {
 
-  public horarios: Horario[] = [];
-
-  public grupos = [
-    { title: 'Grupo 1', url: '/grupos/grupo 1' },
-  ];
-
   utilsService = inject(UtilsService);
   firebaseService = inject(FirebaseService);
   horariosService = inject(HorariosService);
 
-  isCuenta = localStorage.getItem('user');
-
-  cuenta!: string;
+  public horarios: Horario[] = [];
+  public grupos = [
+    { title: 'Grupo 1', url: '/grupos/grupo 1' },
+  ];
+  public cuenta!: string;
+  public submenuVisible: boolean = false
+  public submenuId: string = ''
+  private path = ''
 
   constructor() { }
 
+  user(): User {
+    return this.utilsService.getFromLocalStorge('user');
+  }
+
   async ngOnInit() {
 
-    if (this.isCuenta != null) {
+    if (this.user()) {
+      this.path = `users/${this.user().uid}/horarios`;
+    }
+
+    await this.getData();
+  }
+
+  private async getData() {
+    if (localStorage.getItem('user')) {
       this.cuenta = await JSON.parse(localStorage.getItem('user')).email;
     }
-    if (this.horarios.toString() == '') {
-      await this.horariosService.getHorarios().then(res => {this.horarios = res});
+    if (this.horarios.length == 0) {
+      await this.horariosService.getHorarios(this.path).then(res => { this.horarios = res; });
     }
   }
 
@@ -43,11 +55,59 @@ export class AppComponent implements OnInit {
     this.utilsService.routerLink('/login');
   }
 
+  redirect(url: string) {
+    this.utilsService.routerLink(url)
+  }
+
   activarHorario() { }
 
   activarGroupo() { }
 
-  // getHorarios(index: number) {
-  //   return this.horarios[index].url ? this.horarios[index].url : 'login';
-  // }
+  mostrarSubmenu(id: string) {
+    if (this.submenuVisible == false) {
+      this.submenuVisible = true
+      this.submenuId = id
+    } else {
+      this.submenuVisible = false
+      this.submenuId = ''
+    }
+  }
+
+  async onDuplicate(uid: string) {
+    const loading = await this.utilsService.loading()
+    await loading.present()
+
+    await this.firebaseService.duplicateDocument(this.path, uid)
+      .finally(() => {
+        this.utilsService.presentToast({
+          message: `Horario duplicado correctamente`,
+          duration: 1000,
+          color: 'warning'
+        }).finally(async () => {
+          this.horarios = []
+          await this.getData()
+          loading.dismiss()
+        })
+
+      })
+  }
+
+  async onDelete(uid: string) {
+    const loading = await this.utilsService.loading()
+    await loading.present()
+    this.firebaseService.deleteDocument(this.path + `/${uid}`)
+      .finally(() => {
+        this.utilsService.presentToast({
+          message: `Horario borrado`,
+          duration: 1000,
+          color: 'warning'
+        }).finally(() => {
+          loading.dismiss()
+          this.utilsService.routerLink('/home')
+          this.horarios = []
+          this.getData()
+        })
+      })
+  }
+
 }

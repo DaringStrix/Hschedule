@@ -13,7 +13,7 @@
       <form [formGroup]="form" (keyup.enter)="addHorario()">
 
         <ion-item>
-          <ion-input [formControl]="form.controls.name" label="Nombre" labelPlacement="floating" type="text"
+          <ion-input [formControl]="form.controls.title" label="Nombre" labelPlacement="floating" type="text"
             placeholder="NuevoHorario"></ion-input>
         </ion-item>
 
@@ -25,8 +25,8 @@
         </ion-item>
       </form>
 
-      <ion-item *ngIf="form.controls.name.errors && form.controls.name.touched" lines="none" color="danger">
-        <ion-text *ngIf="form.controls.name.errors?.['required']">
+      <ion-item *ngIf="form.controls.title.errors && form.controls.title.touched" lines="none" color="danger">
+        <ion-text *ngIf="form.controls.title.errors?.['required']">
           Introduzca un email valido.
         </ion-text>
       </ion-item>

@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { UtilsService } from '../services/utils.service';
-import { HorariosService } from '../services/horarios.service';
 import { Horario } from '../models/horario.model';
 
 @Component({
@@ -13,14 +12,14 @@ export class HomePage implements OnInit {
 
   utsv = inject(UtilsService)
   firebaseService = inject(FirebaseService);
-  horariosService = inject(HorariosService);
+
   public primerHorario: Horario[] = [{
     uid: '0',
     title: 'horarioEjemplo',
-    active: true,
+    active: false,
     mode: 'lundom',
     color: 'primary',
-    url: '/horarios/horario de Ejemplo'
+    url: '/horarios/horarioEjemplo'
   }];
 
   async cerrarSesion() {
@@ -42,10 +41,16 @@ export class HomePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.utsv.getFromLocalStorge('horarios')) {
-      this.primerHorario = this.utsv.getFromLocalStorge('horarios')
-    }
-
+    this.getPrimerHorario()
   }
 
+
+  getPrimerHorario(redirect: boolean = false) {
+    if (this.utsv.getFromLocalStorge('horarios')) {
+      this.primerHorario = this.utsv.getFromLocalStorge('horarios');
+    }
+    if (redirect) {
+      this.utsv.routerLink(this.primerHorario['0'].url)
+    }
+  }
 }

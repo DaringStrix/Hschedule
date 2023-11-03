@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu contentId="main-content" type="overlay">
+  <ion-menu menuId="main-content" contentId="main-content" type="overlay">
     <ion-content>
       <app-logo size="100"></app-logo>
       <!-- Horarios -->
@@ -9,21 +9,24 @@
           <ion-label class="ion-text-uppercase ion-text-center">Horarios</ion-label>
         </ion-item>
       </ion-toolbar>
-      <ion-row class="ion-align-items-center" *ngFor="let h of horarios; let i = index">
-        <ion-col size="9">
-          <ion-list id="horarios-list" class="transparent-background">
-            <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" routerDirection="root" [routerLink]="h.url" lines="none" detail="false"
-                routerLinkActive="selected">
-                <ion-label>{{ h.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-        </ion-col>
-        <ion-col size="3">
-          <ion-toggle (click)="activarHorario()"></ion-toggle>
-        </ion-col>
-      </ion-row>
+
+      <ion-list id="horarios-list" class="transparent-background" *ngFor="let h of horarios; let i = index">
+        <ion-item>
+          <ion-menu-toggle menu="main-content" auto-hide="false" (click)="redirect(h.url)">
+            <ion-label>{{h.title }}</ion-label>
+          </ion-menu-toggle>
+          <ion-icon (click)="mostrarSubmenu(h.uid)" slot="end" name="chevron-down"></ion-icon>
+        </ion-item>
+        <div *ngIf="submenuVisible && submenuId == h.uid">
+          <ion-button (click)="onDuplicate(h.uid)" expand="block" fill="clear">Duplicate</ion-button>
+          <ion-button (click)="onDelete(h.uid)" expand="block" fill="clear">Delete</ion-button>
+          <ion-toggle class="ion-padding" [checked]="h.active" slot="end" (click)="activarHorario()" color="primary">
+            <ion-note>
+              Activar notificaciones
+            </ion-note>
+          </ion-toggle>
+        </div>
+      </ion-list>
 
       <!-- Grupos -->
       <ion-toolbar>

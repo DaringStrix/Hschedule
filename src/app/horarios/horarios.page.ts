@@ -4,14 +4,14 @@ import { NavController } from '@ionic/angular';
 import { TareaComponent } from '../components/modals/tarea/tarea.component';
 import { UtilsService } from '../services/utils.service';
 import { HorasComponent } from '../components/modals/horas/horas.component';
-import { HorarioComponent } from '../components/modals/horario/horario.component';
 import { User } from '../models/user.model';
 import { FirebaseService } from '../services/firebase.service';
-import { Horario } from '../models/horario.model';
 import { Horas } from '../models/horas.model';
 import { HorasService } from '../services/horas.service';
 import { TareasService } from '../services/tareas.service';
 import { Tarea } from '../models/tarea.model';
+import { Horario } from '../models/horario.model';
+import { HorarioComponent } from '../components/modals/horario/horario.component';
 
 @Component({
   selector: 'app-horarios',
@@ -27,8 +27,15 @@ export class HorariosPage implements OnInit {
   private tareasService = inject(TareasService)
   private activatedRoute = inject(ActivatedRoute);
 
-  public horario: string;
-  public horarioActual: Horario;
+  public idHorario: string;
+  public horarioActual: Horario = {
+    uid: '0',
+    title: 'horarioEjemplo',
+    active: false,
+    mode: 'lundom',
+    color: 'primary',
+    url: '/horarios/horarioEjemplo'
+  };
   public franjasHorarias: Horas[] = [];
   public tareas: Tarea[] = [];
   public primaryColor: string = 'primary';
@@ -41,12 +48,21 @@ export class HorariosPage implements OnInit {
   constructor() { }
 
   async ngOnInit() {
-    this.horario = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.horarioActual = this.gethorarioActual()
+    this.idHorario = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
-    this.path = `users/${this.user().uid}/horarios/${this.horarioActual.uid}`;
+    this.path = `users/${this.user().uid}/horarios/${this.idHorario}`;
 
-    this.firebaseService.getDocument(this.path).then((h: Horario) => { this.primaryColor = h.color })
+    await this.firebaseService.getDocument(this.path).then(h => {
+      this.primaryColor = h['color'];
+      this.horarioActual.uid = this.idHorario
+      this.horarioActual.title = h['name']
+      this.horarioActual.active = h['active']
+      this.horarioActual.mode = h['mode']
+      this.horarioActual.color = h['color']
+      this.horarioActual.url = `/horarios/${this.idHorario}`
+    }).catch(e => {
+      this.utilsService.routerLink('/home')
+    })
 
     this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
     this.colSize = this.diasSemana.length == 7 ? 1.55 : 2.2
@@ -54,7 +70,6 @@ export class HorariosPage implements OnInit {
     await this.getHoras();
     await this.getTareas();
     this.crearTabla();
-    this.getTarea(0, 0)
 
   }
 
@@ -73,10 +88,6 @@ export class HorariosPage implements OnInit {
 
   private user(): User {
     return this.utilsService.getFromLocalStorge('user')
-  }
-
-  private gethorarioActual(): Horario {
-    return this.utilsService.getFromLocalStorge('horarios').find(({ title }) => title === this.horario)
   }
 
   private async getHoras() {
@@ -102,7 +113,7 @@ export class HorariosPage implements OnInit {
 
   getTarea(row: number, col: number) {
 
-    let tarea = this.tareas.find(t => 
+    let tarea = this.tareas.find(t =>
       t.dia == this.tabla[col][0] && t.horaI == this.tabla[col][1][row].horaInicio && t.horaF == this.tabla[col][1][row].horaFin
     )
 
@@ -157,8 +168,8 @@ export class HorariosPage implements OnInit {
     })
   }
 
-  abrirEnlace(url: string){
-    if (url!='' && url.includes('.')) {
+  abrirEnlace(url: string) {
+    if (url != '' && url.includes('.')) {
       window.open(url, '_blank')
     }
   }

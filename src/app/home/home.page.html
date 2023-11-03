@@ -6,7 +6,7 @@
       <ion-title size="large">Inicio</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card [href]="primerHorario[0].url">
+  <ion-card (click)="getPrimerHorario(true)">
 
     <ion-card-header>
       <ion-card-subtitle>Horarios</ion-card-subtitle>

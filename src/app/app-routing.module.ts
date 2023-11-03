@@ -10,6 +10,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: '/horarios/horarioEjemplo',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
     path: 'horarios/:id',
     canActivate: [AuthGuard],
     loadChildren: () => import('./horarios/horarios.module').then(m => m.HorariosPageModule)

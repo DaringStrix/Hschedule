@@ -52,34 +52,41 @@ ion-thumbnail {
    ion-app {
       zoom: calc(1920 / 1920);
    }
-   .max-content{
+
+   .max-content {
       width: 100%;
       height: max-content;
    }
 }
+
 @media (max-width:1600px) {
    ion-app {
       zoom: calc(1600 / 1920);
    }
-   .max-content{
+
+   .max-content {
       width: 150%;
       height: max-content;
    }
 }
+
 @media (max-width:1275px) {
    ion-app {
       zoom: calc(1275 / 1920);
    }
-   .max-content{
+
+   .max-content {
       width: 150%;
       height: max-content;
    }
 }
+
 @media (max-width:968px) {
    ion-app {
       zoom: calc(968 / 1920);
    }
-   .max-content{
+
+   .max-content {
       width: 200%;
       height: max-content;
    }
@@ -89,7 +96,8 @@ ion-thumbnail {
    ion-app {
       zoom: calc(800 / 1920);
    }
-   .max-content{
+
+   .max-content {
       width: 200%;
       height: max-content;
    }
@@ -122,4 +130,9 @@ ion-thumbnail {
    float: left !important;
    margin-top: -100px !important;
    margin-left: auto;
+}
+
+.transparent-background {
+   background: transparent;
+   --ion-item-background: transparent;
 }
