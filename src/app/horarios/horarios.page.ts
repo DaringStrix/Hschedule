@@ -12,6 +12,7 @@ import { TareasService } from '../services/tareas.service';
 import { Tarea } from '../models/tarea.model';
 import { Horario } from '../models/horario.model';
 import { HorarioComponent } from '../components/modals/horario/horario.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-horarios',
@@ -19,6 +20,13 @@ import { HorarioComponent } from '../components/modals/horario/horario.component
   styleUrls: ['./horarios.page.scss'],
 })
 export class HorariosPage implements OnInit {
+
+  form = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    mode: new FormControl('lundom'),
+    color: new FormControl('primary'),
+    active: new FormControl(true),
+  })
 
   private navController = inject(NavController)
   private utilsService = inject(UtilsService)
@@ -44,6 +52,7 @@ export class HorariosPage implements OnInit {
   public path: string;
   public tabla: any[][] = []
   public franjaActual = []
+  public editar = false
 
   constructor() { }
 
@@ -52,17 +61,7 @@ export class HorariosPage implements OnInit {
 
     this.path = `users/${this.user().uid}/horarios/${this.idHorario}`;
 
-    await this.firebaseService.getDocument(this.path).then(h => {
-      this.primaryColor = h['color'];
-      this.horarioActual.uid = this.idHorario
-      this.horarioActual.title = h['name']
-      this.horarioActual.active = h['active']
-      this.horarioActual.mode = h['mode']
-      this.horarioActual.color = h['color']
-      this.horarioActual.url = `/horarios/${this.idHorario}`
-    }).catch(e => {
-      this.utilsService.routerLink('/home')
-    })
+    await this.getData();
 
     this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
     this.colSize = this.diasSemana.length == 7 ? 1.55 : 2.2
@@ -71,6 +70,20 @@ export class HorariosPage implements OnInit {
     await this.getTareas();
     this.crearTabla();
 
+  }
+
+  private async getData() {
+    await this.firebaseService.getDocument(this.path).then(h => {
+      this.primaryColor = h['color'];
+      this.horarioActual.uid = this.idHorario;
+      this.horarioActual.title = h['title'];
+      this.horarioActual.active = h['active'];
+      this.horarioActual.mode = h['mode'];
+      this.horarioActual.color = h['color'];
+      this.horarioActual.url = `/horarios/${this.idHorario}`;
+    }).catch(e => {
+      this.utilsService.routerLink('/home');
+    });
   }
 
   private crearTabla() {
@@ -171,6 +184,41 @@ export class HorariosPage implements OnInit {
   abrirEnlace(url: string) {
     if (url != '' && url.includes('.')) {
       window.open(url, '_blank')
+    }
+  }
+
+  editarTitulo() {
+    this.form.controls.active.setValue(this.horarioActual.active)
+    this.form.controls.color.setValue(this.horarioActual.color)
+    this.form.controls.mode.setValue(this.horarioActual.mode)
+
+    if (this.form.valid) {
+      this.firebaseService.updateDoc(this.path, this.form.value)
+        .finally(() => {
+          this.utilsService.presentToast({
+            message: 'Titulo editado',
+            duration: 1000,
+            color: 'success'
+          }).finally(() => {
+            this.getData()
+            this.quiereEditar()
+          })
+        })
+    } else {
+      this.utilsService.presentToast({
+        message: 'Debe haber un titulo',
+        duration: 1000,
+        color: 'danger'
+      })
+    }
+  }
+
+  quiereEditar() {
+    if (this.editar == false) {
+      this.editar = true
+    } else {
+      this.form.reset()
+      this.editar = false
     }
   }
 }

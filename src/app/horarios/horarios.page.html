@@ -1,5 +1,27 @@
-<app-header [title]="horarioActual.title">
-</app-header>
+<!-- ///////////////////////cabezera/////////////////////// -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-item lines="none" class="ion-text-capitalize ion-text-center">
+      <ion-button *ngIf="editar" fill="clear" (click)="editarTitulo()">
+        <ion-icon slot="icon-only" name="checkmark-circle" color="success"></ion-icon>
+      </ion-button>
+      <ion-title>
+        <ion-label *ngIf="!editar">
+          {{horarioActual.title}}
+          <ion-icon slot="start" name="create-outline" (click)="quiereEditar()"></ion-icon>
+        </ion-label>
+        <ion-input autofocus="true" *ngIf="editar" [formControl]="form.controls.title" type="text" [placeholder]="horarioActual.title"></ion-input>
+      </ion-title>
+      <ion-button *ngIf="editar" fill="clear" (click)="quiereEditar()">
+        <ion-icon slot="icon-only" name="close-circle" color="danger"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content scrollY="true" scrollX="true" class="ion-padding">
   <!-- ///////////////////////cabezera tabla/////////////////////// -->
@@ -23,7 +45,7 @@
   </ion-header>
   <!-- ////////////////////////////FABs//////////////////////////// -->
   <!-- color picker -->
-  <ion-fab vertical="top" horizontal="end" [edge]="true" slot="fixed">
+  <ion-fab class="ion-margin-top" vertical="top" horizontal="end" [edge]="true" slot="fixed">
     <ion-fab-button color="light">
       <ion-icon name="color-palette"></ion-icon>
     </ion-fab-button>
@@ -70,8 +92,8 @@
             <ion-icon slot="icon-only" name="add"></ion-icon>
           </ion-button>
           <!-- tarea -->
-          <ion-button *ngIf="getTarea(row,col)" (click)="abrirEnlace(getTarea(row,col)['enlace'])"
-            expand="block" fill="outline" [color]="primaryColor">
+          <ion-button *ngIf="getTarea(row,col)" (click)="abrirEnlace(getTarea(row,col)['enlace'])" expand="block"
+            fill="outline" [color]="primaryColor">
             <ion-list style="min-width: 90%;">
               <ion-item lines="none" style="min-width: 90%;">
                 <ion-label class="ion-text-capitalize ion-text-wrap">

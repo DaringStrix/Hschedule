@@ -16,7 +16,7 @@ export class HorarioComponent implements OnInit {
     title: new FormControl('', [Validators.required]),
     mode: new FormControl('lundom'),
     color: new FormControl('primary'),
-    active: new FormControl('true'),
+    active: new FormControl(true),
   })
 
   @Input() primaryColor!: string

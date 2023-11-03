@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { UtilsService } from '../services/utils.service';
 import { Horario } from '../models/horario.model';
+import { HorarioComponent } from '../components/modals/horario/horario.component';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,23 @@ export class HomePage implements OnInit {
       this.primerHorario = this.utsv.getFromLocalStorge('horarios');
     }
     if (redirect) {
-      this.utsv.routerLink(this.primerHorario['0'].url)
+      console.log('trying to redirect...');
+      
+      if (this.primerHorario.length != 0) {        
+        this.utsv.routerLink(this.primerHorario['0'].url)
+      } else {
+        this.addFirstHorario()
+      }
     }
+  }
+
+  addFirstHorario() {
+    this.utsv.presentModal({
+      component: HorarioComponent,
+      componentProps: {
+        primaryColor: 'primary'
+      },
+      cssClass: 'modal-height'
+    })
   }
 }

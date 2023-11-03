@@ -28,7 +28,7 @@ export class HorariosService {
         const elemnt: Horario =
         {
           uid: doc.id,
-          title: doc.data()['name'],
+          title: doc.data()['title'],
           active: doc.data()['active'],
           mode: doc.data()['mode'],
           color: doc.data()['color'],
