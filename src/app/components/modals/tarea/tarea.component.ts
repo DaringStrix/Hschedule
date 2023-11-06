@@ -16,7 +16,7 @@ export class TareaComponent implements OnInit {
   
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    description: new FormControl(''),
     enlace: new FormControl(''),
     icono: new FormControl('earth', [Validators.required]),
     dia: new FormControl('')
@@ -52,6 +52,9 @@ export class TareaComponent implements OnInit {
           message: `Creada nueva tarea ${this.form.controls.title.value}`,
           duration: 1000,
           color: 'success'
+        }).finally(() => {
+          window.location.reload()
+          loading.dismiss()
         })
 
       })
@@ -62,9 +65,6 @@ export class TareaComponent implements OnInit {
             message: "Debe tener ambas horas",
             duration: 1000
           })
-        }).finally(() => {
-          window.location.reload()
-          loading.dismiss()
         })
     }
   }

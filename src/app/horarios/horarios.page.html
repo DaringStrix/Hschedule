@@ -14,7 +14,8 @@
           {{horarioActual.title}}
           <ion-icon slot="start" name="create-outline" (click)="quiereEditar()"></ion-icon>
         </ion-label>
-        <ion-input autofocus="true" *ngIf="editar" [formControl]="form.controls.title" type="text" [placeholder]="horarioActual.title"></ion-input>
+        <ion-input autofocus="true" *ngIf="editar" [formControl]="form.controls.title" type="text"
+          [placeholder]="horarioActual.title"></ion-input>
       </ion-title>
       <ion-button *ngIf="editar" fill="clear" (click)="quiereEditar()">
         <ion-icon slot="icon-only" name="close-circle" color="danger"></ion-icon>
@@ -78,7 +79,7 @@
   <!-- /////////////////////////////////////cuerpo///////////////////////////////////// -->
   <ion-item class="max-content ion-margin-top">
     <ion-grid>
-      <ion-row *ngFor="let horas of franjasHorarias; let row = index">
+      <ion-row class="ion-align-items-center" *ngFor="let horas of franjasHorarias; let row = index">
         <ion-col class="horas" [size]="colSize">
           <ion-item lines="none" class="ion-text-center">
             <ion-label class="ion-text-wrap">{{horas.horainicio}}<br>{{horas.horafin}}</ion-label>
@@ -87,25 +88,39 @@
         <ion-col class="ion-justify-content-center ion-align-items-center cell" [size]="colSize"
           *ngFor="let dia of diasSemana; let col = index">
           <!-- añadir tarea -->
-          <ion-button (click)="addNewTarea(horas.uid, dia, row, col)" id="nueva-tarea" [color]='primaryColor'
-            expand="block" fill="outline" *ngIf="!getTarea(row,col)">
-            <ion-icon slot="icon-only" name="add"></ion-icon>
-          </ion-button>
-          <!-- tarea -->
-          <ion-button *ngIf="getTarea(row,col)" (click)="abrirEnlace(getTarea(row,col)['enlace'])" expand="block"
-            fill="outline" [color]="primaryColor">
-            <ion-list style="min-width: 90%;">
-              <ion-item lines="none" style="min-width: 90%;">
-                <ion-label class="ion-text-capitalize ion-text-wrap">
-                  {{getTarea(row,col)['title']}}
-                </ion-label>
-              </ion-item>
-              <ion-item lines="none">
-                <ion-textarea disabled="true" [placeholder]="getTarea(row,col)['description']"></ion-textarea>
-              </ion-item>
-            </ion-list>
-            <ion-icon slot="start" size="large" class="tarea-icon" [name]="getTarea(row,col)['icono']"></ion-icon>
-          </ion-button>
+          <ion-card *ngIf="!getTarea(row,col)" class="ion-no-margin ion-no-padding">
+            <ion-card-content class="ion-no-margin ion-no-padding full-card">
+              <ion-button class="full-button" (click)="addNewTarea(horas.uid, dia)" id="nueva-tarea"
+                [color]='primaryColor' expand="block" fill="outline">
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+          <!-- tareas -->
+          <ion-card *ngIf="getTarea(row,col)" class="ion-no-margin ion-no-padding">
+            <ion-card-content class="ion-no-margin ion-no-padding full-card">
+              <ion-button class="full-button ion-no-padding" (click)="abrirEnlace(getTarea(row,col)['enlace'])"
+                expand="block" fill="outline" [color]="primaryColor">
+                <ion-list>
+                  <ion-item lines="none" class="ion-no-margin">
+                    <ion-label class="ion-text-capitalize ion-text-wrap">
+                      {{getTarea(row,col)['title']}}
+                      <ion-icon slot="end" [color]="primaryColor" class="tarea-icon"
+                        [name]="getTarea(row,col)['icono']"></ion-icon>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" class="ion-wrap">
+                    <ion-note class="ion-text-wrap">{{getTarea(row,col)['description']}}</ion-note>
+                  </ion-item>
+                </ion-list>
+              </ion-button>
+              <ion-fab class="i-fab-move" vertical="top" horizontal="end">
+                <ion-fab-button size="small" (click)="borrarTarea(horas.uid,getTarea(row,col)['uid'])">
+                  <ion-icon name="close-circle"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+            </ion-card-content>
+          </ion-card>
         </ion-col>
       </ion-row>
       <ion-row class="ion-justify-content-center">

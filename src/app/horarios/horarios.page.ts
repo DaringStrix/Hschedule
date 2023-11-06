@@ -176,7 +176,7 @@ export class HorariosPage implements OnInit {
     console.log('***************************************************************');
 
   }
-  addNewTarea(idhoras: string, dia: string, row: number, col: number) {
+  addNewTarea(idhoras: string, dia: string) {
     this.utilsService.presentModal({
       component: TareaComponent,
       componentProps: {
@@ -227,5 +227,18 @@ export class HorariosPage implements OnInit {
       this.form.reset()
       this.editar = false
     }
+  }
+
+  borrarTarea(idHora:string ,idTarea: string){    
+    this.firebaseService.deleteDocument(this.path + `/horas/${idHora}/tareas/${idTarea}`)
+    .finally(()=>{
+      this.utilsService.presentToast({
+        message: 'Tarea eliminada',
+        duration: 1000,
+        color: 'danger'
+      }).finally(()=>{
+        this.getTareas();
+      })
+    })
   }
 }
