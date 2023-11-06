@@ -4,6 +4,7 @@ import { FirebaseService } from './services/firebase.service';
 import { HorariosService } from './services/horarios.service';
 import { Horario } from './models/horario.model';
 import { User } from './models/user.model';
+import { Grupo } from './models/grupo.model';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +18,7 @@ export class AppComponent implements OnInit {
   horariosService = inject(HorariosService);
 
   public horarios: Horario[] = [];
-  public grupos = [
-    { title: 'Grupo 1', url: '/grupos/grupo 1' },
-  ];
+  public grupos: Grupo[];
   public cuenta!: string;
   public submenuVisible: boolean = false
   public submenuId: string = ''
@@ -34,8 +33,10 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
 
     if (this.user()) {
-      this.path = `users/${this.user().uid}/horarios`;
+      this.path = `users/${this.user().uid}`;
     }
+
+    this.grupos = [{uid: 'grupo1', title: 'Grupo 1', url: '/grupos/grupo 1' , active: await this.firebaseService.getDocument(this.path + `/grupos/grupo1`)['active']}] /* NECESITA SU PROPIO DOCUMEENTO EN FIRESTORE*/ 
 
     await this.getData();
   }
@@ -45,7 +46,7 @@ export class AppComponent implements OnInit {
       this.cuenta = await JSON.parse(localStorage.getItem('user')).email;
     }
     if (this.horarios.length == 0) {
-      await this.horariosService.getHorarios(this.path).then(res => { this.horarios = res; });
+      await this.horariosService.getHorarios(this.path + '/horarios').then(res => { this.horarios = res; });
     }
   }
 
@@ -59,9 +60,17 @@ export class AppComponent implements OnInit {
     this.utilsService.routerLink(url)
   }
 
-  activarHorario() { }
+  async activarHorario(uid:string) {
+    let path = this.path + `/horarios/${uid}`
+    let data = await this.firebaseService.getDocument(path)
+    this.firebaseService.updateDoc(path, {active: !data['active']})
+   }
 
-  activarGroupo() { }
+  async activarGroupo(uid:string) {
+    let path = this.path + `/grupos/${uid}`
+    let data = await this.firebaseService.getDocument(path)
+    this.firebaseService.updateDoc(path, {active: !data['active']})
+   }
 
   mostrarSubmenu(id: string) {
     if (this.submenuVisible == false) {
@@ -77,7 +86,7 @@ export class AppComponent implements OnInit {
     const loading = await this.utilsService.loading()
     await loading.present()
 
-    await this.firebaseService.duplicateDocument(this.path, uid)
+    await this.firebaseService.duplicateDocument(this.path + '/horarios', uid)
       .finally(() => {
         this.utilsService.presentToast({
           message: `Horario duplicado correctamente`,
@@ -95,7 +104,7 @@ export class AppComponent implements OnInit {
   async onDelete(uid: string) {
     const loading = await this.utilsService.loading()
     await loading.present()
-    this.firebaseService.deleteDocument(this.path + `/${uid}`)
+    this.firebaseService.deleteDocument(this.path + `/horarios/${uid}`)
       .finally(() => {
         this.utilsService.presentToast({
           message: `Horario borrado`,
