@@ -54,7 +54,6 @@ export class HorariosPage implements OnInit {
   public path: string;
   public tabla: any[][] = []
   public editar = false
-  private tareaActiva = false
 
   constructor() { }
 
@@ -81,7 +80,7 @@ export class HorariosPage implements OnInit {
       let now = new Date();
       let currentDay = now.getDay() - 1
 
-      this.tareas.forEach(tarea => {
+      if (this.tareas) {this.tareas.forEach(tarea => {
         const tiempoI = new Date();
         const [horaI, minutosI] = tarea['horaI'].split(":");
         tiempoI.setHours(parseInt(horaI), parseInt(minutosI));
@@ -107,7 +106,7 @@ export class HorariosPage implements OnInit {
             })
           }
         }
-      })
+      })}
 
 
     })
@@ -275,6 +274,19 @@ export class HorariosPage implements OnInit {
           color: 'danger'
         }).finally(() => {
           this.getTareas();
+        })
+      })
+  }
+
+  borrarHoras(idHora: string) {
+    this.firebaseService.deleteDocument(this.path + `/horas/${idHora}`)
+      .finally(() => {
+        this.utilsService.presentToast({
+          message: 'Franja horaria eliminada',
+          duration: 1000,
+          color: 'danger'
+        }).finally(() => {
+          this.getHoras();
         })
       })
   }
