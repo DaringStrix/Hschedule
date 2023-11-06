@@ -13,6 +13,7 @@ import { Tarea } from '../models/tarea.model';
 import { Horario } from '../models/horario.model';
 import { HorarioComponent } from '../components/modals/horario/horario.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-horarios',
@@ -47,12 +48,13 @@ export class HorariosPage implements OnInit {
   public franjasHorarias: Horas[] = [];
   public tareas: Tarea[] = [];
   public primaryColor: string = 'primary';
+  public markedColor: string = 'warning';
   public diasSemana: string[];
   public colSize: number;
   public path: string;
   public tabla: any[][] = []
-  public franjaActual = []
   public editar = false
+  private tareaActiva = false
 
   constructor() { }
 
@@ -70,6 +72,45 @@ export class HorariosPage implements OnInit {
     await this.getTareas();
     this.crearTabla();
 
+    this.checkSchedule()
+
+  }
+
+  checkSchedule() {
+    interval(5000).subscribe(() => {
+      let now = new Date();
+      let currentDay = now.getDay() - 1
+
+      this.tareas.forEach(tarea => {
+        const tiempoI = new Date();
+        const [horaI, minutosI] = tarea['horaI'].split(":");
+        tiempoI.setHours(parseInt(horaI), parseInt(minutosI));
+        const tiempoF = new Date();
+        const [horaF, minutosF] = tarea['horaF'].split(":");
+        tiempoF.setHours(parseInt(horaF), parseInt(minutosF));
+
+        if (tarea.dia == this.tabla[currentDay][0] && tiempoI.getTime() <= now.getTime() && now.getTime() <= tiempoF.getTime()) {
+          if (!tarea.active) {
+            this.log('if', '-')
+            const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
+            this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${tarea.uid}`, { active: true })
+              .finally(() => this.getTareas())
+          }
+        } else {
+          if (tarea.active) {
+            this.log('else', '*')
+            const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
+            this.tareas.forEach(async t => {
+              await this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${t.uid}`, { active: false })
+                .catch(e => console.log('Task already inactive'))
+                .finally(() => this.getTareas())
+            })
+          }
+        }
+      })
+
+
+    })
   }
 
   private async getData() {
@@ -111,7 +152,7 @@ export class HorariosPage implements OnInit {
       const horainicioB = b.horainicio;
       const horafinA = a.horafin;
       const horafinB = b.horafin;
-    
+
       if (horainicioA.localeCompare(horainicioB) !== 0) {
         return horainicioA.localeCompare(horainicioB);
       }
@@ -172,10 +213,6 @@ export class HorariosPage implements OnInit {
       cssClass: 'modal-height'
     })
   }
-  log() {
-    console.log('***************************************************************');
-
-  }
   addNewTarea(idhoras: string, dia: string) {
     this.utilsService.presentModal({
       component: TareaComponent,
@@ -229,16 +266,23 @@ export class HorariosPage implements OnInit {
     }
   }
 
-  borrarTarea(idHora:string ,idTarea: string){    
+  borrarTarea(idHora: string, idTarea: string) {
     this.firebaseService.deleteDocument(this.path + `/horas/${idHora}/tareas/${idTarea}`)
-    .finally(()=>{
-      this.utilsService.presentToast({
-        message: 'Tarea eliminada',
-        duration: 1000,
-        color: 'danger'
-      }).finally(()=>{
-        this.getTareas();
+      .finally(() => {
+        this.utilsService.presentToast({
+          message: 'Tarea eliminada',
+          duration: 1000,
+          color: 'danger'
+        }).finally(() => {
+          this.getTareas();
+        })
       })
-    })
   }
+
+  log(log: any, s: string) {
+    console.log(s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s);
+    console.log(log);
+    console.log(s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s);
+  }
+
 }

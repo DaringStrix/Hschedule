@@ -24,9 +24,7 @@ export class TareasService {
     })
 
     path = path + '/tareas'
-    const loading = await this.utilsService.loading();
 
-    await loading.present();
     const querySnapshot = this.firebaseService.getDocs(path);
     
     if (!(await querySnapshot).empty) {
@@ -40,7 +38,8 @@ export class TareasService {
           icono: doc.data()['icono'],
           dia: doc.data()['dia'],
           horaI: horaI,
-          horaF: horaF
+          horaF: horaF,
+          active: doc.data()['active'],
         }
 
         if (this.tareas.find(t => t.uid == elemnt.uid)) {
@@ -49,14 +48,11 @@ export class TareasService {
       });
 
       this.utilsService.saveInLocalStorge('tareas', this.tareas)
-
-      loading.dismiss()
       
       return this.tareas
 
     } else {
       this.utilsService.unsaveInLocalStorge('tareas')
-      loading.dismiss()
       return this.tareas
     }
   }

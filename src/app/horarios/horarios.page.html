@@ -27,16 +27,16 @@
 <ion-content scrollY="true" scrollX="true" class="ion-padding">
   <!-- ///////////////////////cabezera tabla/////////////////////// -->
   <ion-header class="superglue">
-    <ion-item lines="none" class="max-content">
+    <ion-item lines="none" class="max-content" [color]="primaryColor">
       <ion-grid>
         <ion-row>
           <ion-col class="horas" [size]="colSize">
-            <ion-item>
+            <ion-item lines="none" [color]="primaryColor">
               <ion-label class="ion-text-center">HORAS</ion-label>
             </ion-item>
           </ion-col>
           <ion-col [size]="colSize " *ngFor="let dia of diasSemana">
-            <ion-item>
+            <ion-item lines="none" class="border-left" [color]="primaryColor">
               <ion-label class="ion-text-capitalize ion-text-center">{{dia}}</ion-label>
             </ion-item>
           </ion-col>
@@ -87,11 +87,11 @@
         </ion-col>
         <ion-col class="ion-justify-content-center ion-align-items-center cell" [size]="colSize"
           *ngFor="let dia of diasSemana; let col = index">
-          <!-- añadir tarea -->
+          <!-- boton añadir tarea -->
           <ion-card *ngIf="!getTarea(row,col)" class="ion-no-margin ion-no-padding">
             <ion-card-content class="ion-no-margin ion-no-padding full-card">
-              <ion-button class="full-button" (click)="addNewTarea(horas.uid, dia)" id="nueva-tarea"
-                [color]='primaryColor' expand="block" fill="outline">
+              <ion-button class="full-button" (click)="addNewTarea(horas.uid, dia)" id="nueva-tarea" color='dark'
+                expand="block" fill="outline">
                 <ion-icon slot="icon-only" name="add"></ion-icon>
               </ion-button>
             </ion-card-content>
@@ -99,13 +99,14 @@
           <!-- tareas -->
           <ion-card *ngIf="getTarea(row,col)" class="ion-no-margin ion-no-padding">
             <ion-card-content class="ion-no-margin ion-no-padding full-card">
-              <ion-button class="full-button ion-no-padding" (click)="abrirEnlace(getTarea(row,col)['enlace'])"
-                expand="block" fill="outline" [color]="primaryColor">
+              <ion-button class="full-button ion-no-padding"
+                [color]="getTarea(row,col)['active']? markedColor : primaryColor"
+                (click)="abrirEnlace(getTarea(row,col)['enlace'])" expand="block" fill="outline">
                 <ion-list>
                   <ion-item lines="none" class="ion-no-margin">
                     <ion-label class="ion-text-capitalize ion-text-wrap">
                       {{getTarea(row,col)['title']}}
-                      <ion-icon slot="end" [color]="primaryColor" class="tarea-icon"
+                      <ion-icon slot="end" [color]="getTarea(row,col)['active']? markedColor : primaryColor" class="tarea-icon"
                         [name]="getTarea(row,col)['icono']"></ion-icon>
                     </ion-label>
                   </ion-item>
@@ -116,7 +117,7 @@
               </ion-button>
               <ion-fab class="i-fab-move" vertical="top" horizontal="end">
                 <ion-fab-button size="small" (click)="borrarTarea(horas.uid,getTarea(row,col)['uid'])">
-                  <ion-icon name="close-circle"></ion-icon>
+                  <ion-icon name="close-circle" color="dark"></ion-icon>
                 </ion-fab-button>
               </ion-fab>
             </ion-card-content>

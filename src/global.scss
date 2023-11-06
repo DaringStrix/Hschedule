@@ -166,3 +166,7 @@ ion-thumbnail {
       }
    }
 }
+
+.border-left {
+   border-left: 1px inset var(--ion-color-dark);
+}

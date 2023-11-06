@@ -19,7 +19,8 @@ export class TareaComponent implements OnInit {
     description: new FormControl(''),
     enlace: new FormControl(''),
     icono: new FormControl('earth', [Validators.required]),
-    dia: new FormControl('')
+    dia: new FormControl(''),
+    active: new FormControl(false)
   })
     
   utilsService = inject(UtilsService)
