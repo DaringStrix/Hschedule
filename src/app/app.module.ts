@@ -12,13 +12,14 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 
 import { initializeApp } from 'firebase/app';
+import { HttpClientModule } from '@angular/common/http';
 
 initializeApp(environment.firebaseConfig)
 
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ComponentsModule,AngularFireModule.initializeApp(environment.firebaseConfig)],
+    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ComponentsModule,AngularFireModule.initializeApp(environment.firebaseConfig),HttpClientModule],
     providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
     bootstrap: [AppComponent]
 })

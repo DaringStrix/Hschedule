@@ -2,6 +2,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-tarea',
@@ -25,12 +26,23 @@ export class TareaComponent implements OnInit {
     
   utilsService = inject(UtilsService)
   firebaseService = inject(FirebaseService)
+  httpClient = inject(HttpClient)
+
+  public icons: string[] = []
 
   constructor() { }
 
-  ngOnInit() { this.form.controls.dia.setValue(this.dia)}
+  ngOnInit() { 
+    this.form.controls.dia.setValue(this.dia)
+    this.httpClient.get('../assets/ionicons.json').subscribe((data: { icons: string[] }) => {
+      this.icons = data.icons;
+    });
+    
+  }
 
-  abrirTarea() { }
+  setIcon(icon: string){
+    this.form.controls.icono.setValue(icon)
+  }
 
   dismiss(data?: any) {
     this.utilsService.dismissModal(data)

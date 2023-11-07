@@ -27,15 +27,23 @@
       </ion-item>
       <!-- Icono -->
       <ion-item class="ion-padding-top">
-        <ion-icon slot="start" aria-hidden="true" [name]="form.controls.icono.value"></ion-icon>
-        <ion-select [formControl]="form.controls.icono" aria-label="Icono" interface="action-sheet"
-          placeholder="Select icon">
-          <ion-select-option value="at-circle">Arroba</ion-select-option>
-          <ion-select-option value="balloon">Globo</ion-select-option>
-          <ion-select-option value="basketball">Pelota</ion-select-option>
-          <ion-select-option value="bandage">Tirita</ion-select-option>
-          <ion-select-option value="earth">Planeta tierra</ion-select-option>
-        </ion-select>
+        <ion-item id="popover-button">
+          <ion-icon slot="start" aria-hidden="true" [name]="form.controls.icono.value"></ion-icon>
+          <ion-label>Select Icon</ion-label>
+          <ion-icon slot="end" name="chevron-down"></ion-icon>
+        </ion-item>
+        <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+          <ng-template>
+            <ion-content>
+              <ion-list>
+                <ion-item *ngFor="let icon of icons" [button]="true" [detail]="false" (click)="setIcon(icon)">
+                  <ion-icon slot="start" [name]="icon"></ion-icon>
+                  <ion-label>{{icon}}</ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
       </ion-item>
     </ion-card-content>
     <div *ngIf="validate()" class="ion-margin ion-padding">
@@ -44,7 +52,8 @@
           Introduzca un titulo.
         </ion-text>
       </ion-item>
-      <ion-item class="ion-margin-top" *ngIf="form.controls.description.errors && form.controls.description.touched" lines="none" color="danger">
+      <ion-item class="ion-margin-top" *ngIf="form.controls.description.errors && form.controls.description.touched"
+        lines="none" color="danger">
         <ion-text *ngIf="form.controls.description.errors?.['required']">
           Introduzca una descripcion.
         </ion-text>
