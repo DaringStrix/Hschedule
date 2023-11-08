@@ -67,8 +67,7 @@ export class HorariosPage implements OnInit {
     this.diasSemana = this.horarioActual.mode == 'lundom' ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'] : ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']
     this.colSize = this.diasSemana.length == 7 ? 1.55 : 2.2
 
-    await this.getHoras();
-    await this.getTareas();
+
     this.crearTabla();
 
     this.checkSchedule()
@@ -80,39 +79,44 @@ export class HorariosPage implements OnInit {
       let now = new Date();
       let currentDay = now.getDay() - 1
 
-      if (this.tareas) {this.tareas.forEach(tarea => {
-        const tiempoI = new Date();
-        const [horaI, minutosI] = tarea['horaI'].split(":");
-        tiempoI.setHours(parseInt(horaI), parseInt(minutosI));
-        const tiempoF = new Date();
-        const [horaF, minutosF] = tarea['horaF'].split(":");
-        tiempoF.setHours(parseInt(horaF), parseInt(minutosF));
+      if (this.tareas) {
+        this.tareas.forEach(tarea => {
+          const tiempoI = new Date();
+          const [horaI, minutosI] = tarea['horaI'].split(":");
+          tiempoI.setHours(parseInt(horaI), parseInt(minutosI));
+          const tiempoF = new Date();
+          const [horaF, minutosF] = tarea['horaF'].split(":");
+          tiempoF.setHours(parseInt(horaF), parseInt(minutosF));
+          if (tarea.dia == this.tabla[currentDay][0] && tiempoI.getTime() <= now.getTime() && now.getTime() <= tiempoF.getTime()) {
+            if (!tarea.active) {
+              const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
+              if (!tarea.active) {
+                this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${tarea.uid}`, { active: true })
+                  .finally(() => this.getTareas())
+              }
+            }
+          } else {
+            if (tarea.active) {
+              const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
+              if (tarea.active) {
+                this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${tarea.uid}`, { active: false })
+                  .finally(() => this.getTareas())
+              }
 
-        if (tarea.dia == this.tabla[currentDay][0] && tiempoI.getTime() <= now.getTime() && now.getTime() <= tiempoF.getTime()) {
-          if (!tarea.active) {
-            this.log('if', '-')
-            const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
-            this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${tarea.uid}`, { active: true })
-              .finally(() => this.getTareas())
+            }
           }
-        } else {
-          if (tarea.active) {
-            this.log('else', '*')
-            const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
-            this.tareas.forEach(async t => {
-              await this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${t.uid}`, { active: false })
-                .catch(e => console.log('Task already inactive'))
-                .finally(() => this.getTareas())
-            })
-          }
-        }
-      })}
-
-
+        })
+      }
     })
   }
 
   private async getData() {
+    await this.getHorario();
+    await this.getHoras();
+    await this.getTareas();
+  }
+
+  private async getHorario() {
     await this.firebaseService.getDocument(this.path).then(h => {
       this.primaryColor = h['color'];
       this.horarioActual.uid = this.idHorario;
@@ -127,7 +131,9 @@ export class HorariosPage implements OnInit {
   }
 
   private crearTabla() {
+    this.tabla = []
     let horas = []
+
     this.franjasHorarias.forEach(hora => {
       horas.push({
         horaInicio: hora.horainicio,
@@ -144,6 +150,7 @@ export class HorariosPage implements OnInit {
   }
 
   private async getHoras() {
+    this.franjasHorarias = []
     await this.horasService.getHoras(this.path).then(res => { this.franjasHorarias = res; });
 
     this.franjasHorarias.sort((a, b) => {
@@ -160,10 +167,10 @@ export class HorariosPage implements OnInit {
   }
 
   private async getTareas() {
-
+    this.tareas = []
     let franjas = []
     let tasks: Promise<Tarea[]>
-    await this.franjasHorarias.forEach(franja => { franjas.push(franja.uid) })
+    this.franjasHorarias.forEach(franja => { franjas.push(franja.uid) })
     franjas.forEach(uid => {
       tasks = this.tareasService.getTareas(this.path + `/horas/${uid}`).then(res => { return res })
     })
@@ -285,16 +292,10 @@ export class HorariosPage implements OnInit {
           message: 'Franja horaria eliminada',
           duration: 1000,
           color: 'danger'
-        }).finally(() => {
-          this.getHoras();
+        }).finally(async () => {
+          await this.getData();
+          this.crearTabla()
         })
       })
   }
-
-  log(log: any, s: string) {
-    console.log(s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s);
-    console.log(log);
-    console.log(s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s + s);
-  }
-
 }

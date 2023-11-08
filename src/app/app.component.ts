@@ -186,8 +186,6 @@ export class AppComponent implements OnInit {
     date.setHours(0, 0, 0, 0)
     domingo.setHours(0, 0, 0, 0)
 
-    date.setFullYear(2023, 11, 23)
-
     if (date.getTime() > domingo.getTime()) {
       semanasDifer = Math.ceil(((((date.getTime() - domingo.getTime()) / 1000) / 3600) / 24) / 7)
     } else if (date.getTime() <= domingo.getTime()) {

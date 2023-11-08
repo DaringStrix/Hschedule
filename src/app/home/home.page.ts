@@ -50,9 +50,7 @@ export class HomePage implements OnInit {
     if (this.utsv.getFromLocalStorge('horarios')) {
       this.primerHorario = this.utsv.getFromLocalStorge('horarios');
     }
-    if (redirect) {
-      console.log('trying to redirect...');
-      
+    if (redirect) {      
       if (this.primerHorario.length != 0) {        
         this.utsv.routerLink(this.primerHorario['0'].url)
       } else {

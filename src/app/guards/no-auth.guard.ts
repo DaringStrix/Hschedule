@@ -10,17 +10,15 @@ export class NoAuthGuard implements CanActivate {
   utilsService = inject(UtilsService);
   firebaseS = inject(FirebaseService);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean> | boolean {
+  canActivate(): Promise<boolean> | boolean {
     this.firebaseS.getAuth((user) => {
       if (user) {
-        console.log('-----------------------------It isnt Autenticated-----------------------------' + JSON.stringify(user));
+        console.log('-----------------------------It isnt Autenticated-----------------------------');
         this.utilsService.routerLink('/home')
         return false
 
       } else {
-        console.log('-----------------------------Its Autenticated-----------------------------' + JSON.stringify(user));
+        console.log('-----------------------------Its Autenticated-----------------------------');
         return true
       }
     })

@@ -49,10 +49,8 @@ export class TareaComponent implements OnInit {
   }
   
   async addTarea() {
-    console.log('////////////Añadiendo');
     
     if (this.form.valid) {
-      console.log('////////////Valido');
 
       const loading = await this.utilsService.loading()
       await loading.present()

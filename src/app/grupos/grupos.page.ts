@@ -8,7 +8,6 @@ import { ItemReorderEventDetail } from '@ionic/angular';
 import { Horario } from '../models/horario.model';
 import { HorariosService } from '../services/horarios.service';
 import { GruposService } from '../services/grupos.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-grupos',
