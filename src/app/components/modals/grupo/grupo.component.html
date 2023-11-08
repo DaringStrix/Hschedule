@@ -1,28 +1,22 @@
 <ion-header>
-  <ion-toolbar class="ion-padding ion-text-center" [color]="primaryColor">
+  <ion-toolbar class="ion-padding ion-text-center" color="light">
     <ion-button (click)="dismiss()" slot="start" fill="clear" color="dark">
       <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
     </ion-button>
-    <ion-title>Nuevo Horario</ion-title>
+    <ion-title>Nuevo Grupo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card class="fill">
     <ion-card-content>
-      <form [formGroup]="form" (keyup.enter)="addHorario()">
+      <form [formGroup]="form" (keyup.enter)="addGrupo()">
 
         <ion-item>
           <ion-input [formControl]="form.controls.title" label="Nombre" labelPlacement="floating" type="text"
-            placeholder="NuevoHorario"></ion-input>
+            placeholder="NuevoGrupo"></ion-input>
         </ion-item>
 
-        <ion-item class="ion-padding-top ion-padding-bottom">
-          <ion-select [formControl]="form.controls.mode" label="Dias a mostrar" labelPlacement="floating">
-            <ion-select-option value="lunvie">Lunes a Viernes</ion-select-option>
-            <ion-select-option value="lundom">Lunes a Domingo</ion-select-option>
-          </ion-select>
-        </ion-item>
       </form>
 
       <ion-item *ngIf="form.controls.title.errors && form.controls.title.touched" lines="none" color="danger">
@@ -35,7 +29,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button (click)="addHorario()" [color]="primaryColor" expand="block" shape="round">
-    Crear horario
+  <ion-button (click)="addGrupo()" color="light" expand="block" shape="round">
+    Crear grupo
   </ion-button>
 </ion-footer>

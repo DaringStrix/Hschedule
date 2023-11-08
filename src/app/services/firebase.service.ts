@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User as MyUser } from '../models/user.model';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged, NextOrObserver, User } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged, NextOrObserver, User } from '@angular/fire/auth';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { getFirestore, setDoc, doc, getDoc, addDoc, collection, query, getDocs, updateDoc, deleteDoc } from "@angular/fire/firestore";
 

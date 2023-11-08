@@ -5,23 +5,28 @@ import { HorariosService } from './services/horarios.service';
 import { Horario } from './models/horario.model';
 import { User } from './models/user.model';
 import { Grupo } from './models/grupo.model';
+import { GrupoComponent } from './components/modals/grupo/grupo.component';
+import { GruposService } from './services/grupos.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
+
 export class AppComponent implements OnInit {
 
-  utilsService = inject(UtilsService);
-  firebaseService = inject(FirebaseService);
-  horariosService = inject(HorariosService);
+  private utilsService = inject(UtilsService);
+  private firebaseService = inject(FirebaseService);
+  private horariosService = inject(HorariosService);
+  private gruposService = inject(GruposService);
+
 
   public horarios: Horario[] = [];
-  public grupos: Grupo[];
+  public grupos: Grupo[] = [];
   public cuenta!: string;
-  public submenuVisible: boolean = false
-  public submenuId: string = ''
+  public submenuId: string[] = []
   private path = ''
 
   constructor() { }
@@ -36,17 +41,37 @@ export class AppComponent implements OnInit {
       this.path = `users/${this.user().uid}`;
     }
 
-    this.grupos = [{uid: 'grupo1', title: 'Grupo 1', url: '/grupos/grupo 1' , active: await this.firebaseService.getDocument(this.path + `/grupos/grupo1`)['active']}] /* NECESITA SU PROPIO DOCUMEENTO EN FIRESTORE*/ 
-
     await this.getData();
+
+    this.grupos.forEach(g => {
+      if (g.active) {
+        this.horarioWeekChanger(g).then(async () => {
+          this.horarios = []
+          await this.getHorarios()
+        })
+      }
+    })
   }
 
   private async getData() {
+    await this.getCuenta();
+    await this.getHorarios();
+    await this.getGrupos();
+  }
+
+  private async getCuenta() {
     if (localStorage.getItem('user')) {
       this.cuenta = await JSON.parse(localStorage.getItem('user')).email;
     }
+  }
+  private async getHorarios() {
     if (this.horarios.length == 0) {
       await this.horariosService.getHorarios(this.path + '/horarios').then(res => { this.horarios = res; });
+    }
+  }
+  private async getGrupos() {
+    if (this.grupos.length == 0) {
+      await this.gruposService.getGrupos(this.path + '/grupos').then(res => { this.grupos = res; });
     }
   }
 
@@ -60,29 +85,29 @@ export class AppComponent implements OnInit {
     this.utilsService.routerLink(url)
   }
 
-  async activarHorario(uid:string) {
+  async activarHorario(uid: string) {
     let path = this.path + `/horarios/${uid}`
     let data = await this.firebaseService.getDocument(path)
-    this.firebaseService.updateDoc(path, {active: !data['active']})
-   }
-
-  async activarGroupo(uid:string) {
-    let path = this.path + `/grupos/${uid}`
-    let data = await this.firebaseService.getDocument(path)
-    this.firebaseService.updateDoc(path, {active: !data['active']})
-   }
-
-  mostrarSubmenu(id: string) {
-    if (this.submenuVisible == false) {
-      this.submenuVisible = true
-      this.submenuId = id
-    } else {
-      this.submenuVisible = false
-      this.submenuId = ''
-    }
+    this.firebaseService.updateDoc(path, { active: !data['active'] })
   }
 
-  async onDuplicate(uid: string) {
+  async activarGroupo(uid: string) {
+    let path = this.path + `/grupos/${uid}`
+    let data = await this.firebaseService.getDocument(path)
+    this.firebaseService.updateDoc(path, { active: !data['active'] })
+  }
+
+  mostrarSubmenu(uid: string) {
+    if (this.submenuId.find(id => id == uid)) {
+      this.submenuId.splice(this.submenuId.indexOf(uid), 1)
+      delete this.submenuId['uid']
+    } else {
+      this.submenuId.push(uid)
+    }
+
+  }
+
+  async duplicateHorario(uid: string) {
     const loading = await this.utilsService.loading()
     await loading.present()
 
@@ -94,14 +119,15 @@ export class AppComponent implements OnInit {
           color: 'warning'
         }).finally(async () => {
           this.horarios = []
-          await this.getData()
+          await this.getHorarios()
           loading.dismiss()
         })
 
       })
   }
 
-  async onDelete(uid: string) {
+  async deleteHorario(uid: string) {
+
     const loading = await this.utilsService.loading()
     await loading.present()
     this.firebaseService.deleteDocument(this.path + `/horarios/${uid}`)
@@ -112,11 +138,86 @@ export class AppComponent implements OnInit {
           color: 'warning'
         }).finally(() => {
           loading.dismiss()
-          this.utilsService.routerLink('/home')
+          if (window.location.pathname == `/horarios/${uid}`) {
+            this.utilsService.routerLink('/home')
+          }
           this.horarios = []
-          this.getData()
+          this.getHorarios()
         })
       })
   }
 
+  async deleteGrupo(uid: string) {
+    const loading = await this.utilsService.loading()
+    await loading.present()
+    this.firebaseService.deleteDocument(this.path + `/grupos/${uid}`)
+      .finally(() => {
+        this.utilsService.presentToast({
+          message: `Grupo borrado`,
+          duration: 1000,
+          color: 'warning'
+        }).finally(() => {
+          loading.dismiss()
+          if (window.location.pathname == `/grupos/${uid}`) {
+            this.utilsService.routerLink('/home')
+          }
+          this.grupos = []
+          this.getGrupos()
+        })
+      })
+  }
+
+  addGrupo() {
+    this.utilsService.presentModal({
+      component: GrupoComponent,
+      cssClass: 'modal-height'
+    })
+  }
+
+  async horarioWeekChanger(grupoActual: Grupo) {
+    let horariosSeleccionados: any[] = []
+    await this.gruposService.getHorariosOnGrupo(this.path + `/grupos/${grupoActual.uid}/horariosOnGrupo`).then(res => { horariosSeleccionados = res });
+
+    let date = new Date()
+    let domingo = new Date()
+    let semanasDifer
+    domingo.setTime(grupoActual.lastDayOfWeek['seconds'] * 1000)
+
+    date.setHours(0, 0, 0, 0)
+    domingo.setHours(0, 0, 0, 0)
+
+    date.setFullYear(2023, 11, 23)
+
+    if (date.getTime() > domingo.getTime()) {
+      semanasDifer = Math.ceil(((((date.getTime() - domingo.getTime()) / 1000) / 3600) / 24) / 7)
+    } else if (date.getTime() <= domingo.getTime()) {
+      semanasDifer = 0
+    }
+
+    let resto: number
+
+    if (semanasDifer > horariosSeleccionados.length) {
+      resto = semanasDifer % horariosSeleccionados.length
+    } else resto = semanasDifer
+    let horario
+    horariosSeleccionados.forEach(hs => {
+      if (hs.position == resto) {
+        if (hs.active == false) {
+          this.firebaseService.updateDoc(this.path + `/grupos/${grupoActual.uid}/horariosOnGrupo/${hs.uid}`, { active: true })
+        }
+        horario = this.horarios.find(h => h.uid == hs.uid)
+        if (!horario.active) {
+          this.firebaseService.updateDoc(this.path + `/horarios/${hs.uid}`, { active: true })
+        }
+      } else {
+        if (hs.active == true) {
+          this.firebaseService.updateDoc(this.path + `/grupos/${grupoActual.uid}/horariosOnGrupo/${hs.uid}`, { active: false })
+        }
+        horario = this.horarios.find(h => h.uid == hs.uid)
+        if (horario.active) {
+          this.firebaseService.updateDoc(this.path + `/horarios/${hs.uid}`, { active: false })
+        }
+      }
+    })
+  }
 }

@@ -1,9 +1,54 @@
-<app-header [title]="grupo"/>
+<app-header [title]="grupoActual.title" />
 
-<ion-content [fullscreen]="true">
+<ion-content class="ion-margin ion-padding" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">grupos</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-reorder-group class="ion-margin ion-padding" [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+    <ion-item class="ion-margin ion-padding" lines="none" *ngFor="let h of horariosSeleccionados">
+      <ion-label>
+        {{h.title}}
+      </ion-label>
+      <ion-reorder slot="end"></ion-reorder>
+    </ion-item>
+  </ion-reorder-group>
+  <ion-button id="open-add-horarios" expand="block" fill="outline" color="primary">
+    <ion-icon slot="start" name="add"></ion-icon>
+    <ion-label>Añadir horario</ion-label>
+    <ion-icon slot="end" name="add"></ion-icon>
+  </ion-button>
+
+  <!-- Modal añadir horarios -->
+  <ion-modal trigger="open-add-horarios" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="ion-padding ion-text-center" color="light">
+          <ion-button (click)="dismissModal()" slot="start" fill="clear" color="dark">
+            <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+          </ion-button>
+          <ion-title>Selecciona horarios a añadir</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content>
+        <ion-card class="fill">
+          <ion-card-content>
+            <ion-item *ngFor="let horario of horarios">
+              <ion-checkbox [checked]="isChecked(horario.uid)" (ionChange)="checkboxChanged(horario.uid)">
+                <ion-label>{{horario.title}}</ion-label>
+              </ion-checkbox>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+      
+      <ion-footer>
+        <ion-button (click)="addHorario()" color="light" expand="block" shape="round">
+          Añadir horarios
+        </ion-button>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
 </ion-content>
