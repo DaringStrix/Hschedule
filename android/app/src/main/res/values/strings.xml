@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hschedule</string>
+    <string name="title_activity_main">Hschedule</string>
+    <string name="package_name">com.hschedule.app</string>
+    <string name="custom_url_scheme">com.hschedule.app</string>
+</resources>

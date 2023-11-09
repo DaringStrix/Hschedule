@@ -1,13 +1,14 @@
+import { FirebaseService } from './services/firebase.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { UtilsService } from './services/utils.service';
-import { FirebaseService } from './services/firebase.service';
 import { HorariosService } from './services/horarios.service';
 import { Horario } from './models/horario.model';
 import { User } from './models/user.model';
 import { Grupo } from './models/grupo.model';
 import { GrupoComponent } from './components/modals/grupo/grupo.component';
 import { GruposService } from './services/grupos.service';
-import { ActivatedRoute } from '@angular/router';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,11 @@ import { ActivatedRoute } from '@angular/router';
 
 export class AppComponent implements OnInit {
 
-  private utilsService = inject(UtilsService);
   private firebaseService = inject(FirebaseService);
+  private utilsService = inject(UtilsService);
   private horariosService = inject(HorariosService);
   private gruposService = inject(GruposService);
-
+  private alertController = inject(AlertController)
 
   public horarios: Horario[] = [];
   public grupos: Grupo[] = [];
@@ -29,20 +30,26 @@ export class AppComponent implements OnInit {
   public submenuId: string[] = []
   private path = ''
 
+
   constructor() { }
 
-  user(): User {
-    return this.utilsService.getFromLocalStorge('user');
-  }
-
   async ngOnInit() {
-
+    await LocalNotifications.requestPermissions()
+    if((await LocalNotifications.checkPermissions()).display != 'granted'){
+      const alert = await this.alertController.create({
+        header: 'Debe activar notificaciones',
+        message: 'Sin permiso de notificacones no podrá recivir alertas de inicio de tarea',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
+    
     if (this.user()) {
       this.path = `users/${this.user().uid}`;
     }
-
+    
     await this.getData();
-
+    
     this.grupos.forEach(g => {
       if (g.active) {
         this.horarioWeekChanger(g).then(async () => {
@@ -52,6 +59,11 @@ export class AppComponent implements OnInit {
       }
     })
   }
+
+  user(): User {
+    return this.utilsService.getFromLocalStorge('user');
+  }
+
 
   private async getData() {
     await this.getCuenta();

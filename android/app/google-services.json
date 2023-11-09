@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378499228270",
+    "project_id": "hschedule-9357e",
+    "storage_bucket": "hschedule-9357e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378499228270:android:56d137a72ffc8afa4dfc7f",
+        "android_client_info": {
+          "package_name": "com.hschedule.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBueObp86A5lDwVxHItPkgYOxXkaSJdbNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

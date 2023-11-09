@@ -12,7 +12,7 @@ export const environment = {
     messagingSenderId: "378499228270",
     appId: "1:378499228270:web:c9305fb8947cdbdd4dfc7f",
     measurementId: "G-D8006NT675"
-
+    
     // apiKey: "AIzaSyBzNUmhCEvji3soLW99J7bdlatqPiSx5uQ",
     // authDomain: "ionic-curso-3e428.firebaseapp.com",
     // projectId: "ionic-curso-3e428",

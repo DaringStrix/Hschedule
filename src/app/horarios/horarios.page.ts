@@ -14,6 +14,7 @@ import { Horario } from '../models/horario.model';
 import { HorarioComponent } from '../components/modals/horario/horario.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
+import { LocalNotifications, LocalNotificationSchema, ScheduleOptions } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-horarios',
@@ -54,6 +55,10 @@ export class HorariosPage implements OnInit {
   public path: string;
   public tabla: any[][] = []
   public editar = false
+  public options: ScheduleOptions = {
+    notifications: []
+  }
+  public notificaciones: LocalNotificationSchema[] = []
 
   constructor() { }
 
@@ -80,7 +85,8 @@ export class HorariosPage implements OnInit {
       let currentDay = now.getDay() - 1
 
       if (this.tareas) {
-        this.tareas.forEach(tarea => {
+        let i = 1
+        this.tareas.forEach(async tarea => {
           const tiempoI = new Date();
           const [horaI, minutosI] = tarea['horaI'].split(":");
           tiempoI.setHours(parseInt(horaI), parseInt(minutosI));
@@ -91,8 +97,17 @@ export class HorariosPage implements OnInit {
             if (!tarea.active) {
               const idHora = this.franjasHorarias.find(fh => fh.horainicio == tarea.horaI && fh.horafin == tarea.horaF).uid
               if (!tarea.active) {
+                let notification = {
+                  id: i++,
+                  title: 'Tarea iniciada',
+                  body: `${tarea.title} se a iniciado a las ${tarea.horaI} y finalizará a las  ${tarea.horaF}`,
+                  iconColor: '#130398'
+                }
+
+                this.notificaciones.push(notification)
+
                 this.firebaseService.updateDoc(this.path + `/horas/${idHora}/tareas/${tarea.uid}`, { active: true })
-                  .finally(() => this.getTareas())
+                  .finally(() => { this.getTareas() })
               }
             }
           } else {
@@ -106,6 +121,18 @@ export class HorariosPage implements OnInit {
             }
           }
         })
+      }
+
+      this.options = {
+        notifications: this.notificaciones
+      }
+
+      if (this.options.notifications.length != 0) {
+        LocalNotifications.schedule(this.options)
+        this.options = {
+          notifications: []
+        }
+        this.notificaciones = []
       }
     })
   }
