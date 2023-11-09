@@ -49,13 +49,13 @@
     <div *ngIf="validate()" class="ion-margin ion-padding">
       <ion-item *ngIf="form.controls.title.errors && form.controls.title.touched" lines="none" color="danger">
         <ion-text *ngIf="form.controls.title.errors?.['required']">
-          Introduzca un titulo.
+          Introduzca un titulo valido.
         </ion-text>
       </ion-item>
-      <ion-item class="ion-margin-top" *ngIf="form.controls.description.errors && form.controls.description.touched"
+      <ion-item class="ion-margin-top" *ngIf="form.controls.enlace.errors"
         lines="none" color="danger">
-        <ion-text *ngIf="form.controls.description.errors?.['required']">
-          Introduzca una descripcion.
+        <ion-text *ngIf="form.controls.enlace.errors">
+          Introduzca un enlace con una forma similar a https://www.algo.algo/ (www. no es obligatorio).
         </ion-text>
       </ion-item>
     </div>

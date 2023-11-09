@@ -18,7 +18,7 @@ export class TareaComponent implements OnInit {
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
     description: new FormControl(''),
-    enlace: new FormControl(''),
+    enlace: new FormControl('', Validators.pattern(/^(https?|ftp):\/\/(?:www\.)?([a-zA-Z0-9])+(?:\.[a-zA-Z]{2,6})+(?:\/[^\/]*)+(.*)?$/)),
     icono: new FormControl('earth', [Validators.required]),
     dia: new FormControl(''),
     active: new FormControl(false)
@@ -73,14 +73,14 @@ export class TareaComponent implements OnInit {
           console.log(e);
 
           this.utilsService.presentToast({
-            message: "Debe tener ambas horas",
+            message: "Debe tener titulo o url con forma similar a https://algo.algo",
             duration: 1000
           })
         })
     }
   }
   validate() {
-    if (this.form.controls.title.errors && this.form.controls.title.touched || this.form.controls.description.errors && this.form.controls.description.touched) {
+    if (this.form.controls.title.errors && this.form.controls.title.touched || this.form.controls.enlace.errors) {
       return true
     } else {
       return false

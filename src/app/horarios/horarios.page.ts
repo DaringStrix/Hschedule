@@ -246,6 +246,7 @@ export class HorariosPage implements OnInit {
       cssClass: 'modal-height'
     })
   }
+
   addNewTarea(idhoras: string, dia: string) {
     this.utilsService.presentModal({
       component: TareaComponent,
@@ -260,7 +261,7 @@ export class HorariosPage implements OnInit {
 
   abrirEnlace(url: string) {
     if (url != '' && url.includes('.')) {
-      window.open(url, '_blank')
+      window.open(url, '_system', 'location=yes')
     }
   }
 
