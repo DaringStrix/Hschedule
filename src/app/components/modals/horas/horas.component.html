@@ -16,7 +16,7 @@
       <ion-datetime-button class="ion-padding-top ion-padding-bottom" datetime="horaInicio"></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime [formControl]="form.controls.horainicio" id="horaInicio" presentation="time"></ion-datetime>
+          <ion-datetime [formControl]="form.controls.horainicio" [showDefaultButtons]="true" id="horaInicio" presentation="time"></ion-datetime>
         </ng-template>
       </ion-modal>
 
@@ -26,16 +26,24 @@
       <ion-datetime-button class="ion-padding-top" datetime="horaFin"></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime [formControl]="form.controls.horafin" id="horaFin" presentation="time"></ion-datetime>
+          <ion-datetime [formControl]="form.controls.horafin" [showDefaultButtons]="true" id="horaFin" presentation="time"></ion-datetime>
         </ng-template>
       </ion-modal>
+      <div *ngIf="!validateTime()" class="ion-margin ion-padding">
+        <ion-item class="ion-margin-top"
+          lines="none" color="danger">
+          <ion-text>
+            La hora de fin necesita ser mayor que la de inicio
+          </ion-text>
+        </ion-item>
+      </div>
 
     </ion-card-content>
   </ion-card>
 </ion-content>
 
 <ion-footer>
-  <ion-button (click)="addHora()" [color]="primaryColor" expand="block" shape="round">
+  <ion-button (click)="addHora()" [disabled]="!validateTime()" [color]="primaryColor" expand="block" shape="round">
     Crear franja horaria
   </ion-button>
 </ion-footer>
