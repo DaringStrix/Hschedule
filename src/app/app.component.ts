@@ -9,6 +9,7 @@ import { GrupoComponent } from './components/modals/grupo/grupo.component';
 import { GruposService } from './services/grupos.service';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { AlertController } from '@ionic/angular';
+import { HorarioComponent } from './components/modals/horario/horario.component';
 
 @Component({
   selector: 'app-root',
@@ -87,10 +88,22 @@ export class AppComponent implements OnInit {
     }
   }
 
-  cerrarSesion() {
-    this.utilsService.unsaveInLocalStorge('user');
-    this.firebaseService.singOut();
-    this.utilsService.routerLink('/login');
+  async cerrarSesion() {
+    const loading = await this.utilsService.loading()
+    await loading.present()
+
+    this.utilsService.clearLocalStorge()
+    await this.firebaseService.singOut().then(() => {
+    this.utilsService.routerLink('/home').then(()=> {
+      window.location.reload()
+    });
+      loading.dismiss()
+      this.utilsService.presentToast({
+        message: `Se ha cerrado la sesión`,
+        duration: 1000,
+        color: 'warning'
+      })
+    })
   }
 
   redirect(url: string) {
@@ -179,12 +192,7 @@ export class AppComponent implements OnInit {
       })
   }
 
-  addGrupo() {
-    this.utilsService.presentModal({
-      component: GrupoComponent,
-      cssClass: 'modal-height'
-    })
-  }
+  
 
   async horarioWeekChanger(grupoActual: Grupo) {
     let horariosSeleccionados: any[] = []
@@ -229,5 +237,30 @@ export class AppComponent implements OnInit {
         }
       }
     })
+  }
+  
+  addHorario() {
+    if (this.user()) {
+      this.utilsService.presentModal({
+        component: HorarioComponent,
+        componentProps: {
+          primaryColor: 'primary'
+        },
+        cssClass: 'modal-height'
+      })
+    } else {
+      this.utilsService.routerLink('login')
+    }
+  }
+  
+  addGrupo() {
+    if (this.user()) {
+      this.utilsService.presentModal({
+        component: GrupoComponent,
+        cssClass: 'modal-height'
+      })
+    } else {
+      this.utilsService.routerLink('login')
+    }
   }
 }
