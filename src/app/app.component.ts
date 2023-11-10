@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     await LocalNotifications.requestPermissions()
-    if((await LocalNotifications.checkPermissions()).display != 'granted'){
+    if ((await LocalNotifications.checkPermissions()).display != 'granted') {
       const alert = await this.alertController.create({
         header: 'Debe activar notificaciones',
         message: 'Sin permiso de notificacones no podrá recivir alertas de inicio de tarea',
@@ -44,13 +44,13 @@ export class AppComponent implements OnInit {
       });
       await alert.present();
     }
-    
+
     if (this.user()) {
       this.path = `users/${this.user().uid}`;
     }
-    
+
     await this.getData();
-    
+
     this.grupos.forEach(g => {
       if (g.active) {
         this.horarioWeekChanger(g).then(async () => {
@@ -94,9 +94,9 @@ export class AppComponent implements OnInit {
 
     this.utilsService.clearLocalStorge()
     await this.firebaseService.singOut().then(() => {
-    this.utilsService.routerLink('/home').then(()=> {
-      window.location.reload()
-    });
+      this.utilsService.routerLink('/home').then(() => {
+        window.location.reload()
+      });
       loading.dismiss()
       this.utilsService.presentToast({
         message: `Se ha cerrado la sesión`,
@@ -192,7 +192,7 @@ export class AppComponent implements OnInit {
       })
   }
 
-  
+
 
   async horarioWeekChanger(grupoActual: Grupo) {
     let horariosSeleccionados: any[] = []
@@ -238,7 +238,7 @@ export class AppComponent implements OnInit {
       }
     })
   }
-  
+
   addHorario() {
     if (this.user()) {
       this.utilsService.presentModal({
@@ -252,7 +252,7 @@ export class AppComponent implements OnInit {
       this.utilsService.routerLink('login')
     }
   }
-  
+
   addGrupo() {
     if (this.user()) {
       this.utilsService.presentModal({
@@ -262,5 +262,15 @@ export class AppComponent implements OnInit {
     } else {
       this.utilsService.routerLink('login')
     }
+  }
+
+  handleRefresh(event) {
+    setTimeout(async () => {
+      this.horarios = []
+      this.grupos = []
+      await this.getHorarios();
+      await this.getGrupos();
+      event.target.complete();
+    }, 1000);
   }
 }

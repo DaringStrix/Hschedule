@@ -326,4 +326,11 @@ export class HorariosPage implements OnInit {
         })
       })
   }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.getData()
+      event.target.complete();
+    }, 1000);
+  }
 }

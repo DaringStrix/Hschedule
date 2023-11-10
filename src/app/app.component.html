@@ -1,7 +1,13 @@
 <ion-app>
   <ion-menu menuId="main-content" contentId="main-content" type="overlay">
     <ion-content>
+      <!-- Logo -->
       <app-logo size="100"></app-logo>
+      <!-- Refresher -->
+      <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
       <!-- Horarios -->
 
       <ion-toolbar>
