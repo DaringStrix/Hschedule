@@ -32,7 +32,7 @@ export class GruposPage implements OnInit {
   };
   public path: string
   public horarios: Horario[] = [];
-  public horariosSeleccionados: any[] = [];
+  public horariosSelect: any[] = [];
   public horariosChecked: any[] = [];
 
   constructor() { }
@@ -40,7 +40,7 @@ export class GruposPage implements OnInit {
   async ngOnInit() {
     this.path = `users/${this.user().uid}`;
 
-    this.horariosSeleccionados = [];
+    this.horariosSelect = [];
 
     await this.getData()
 
@@ -62,41 +62,40 @@ export class GruposPage implements OnInit {
       this.utilsService.routerLink('/home');
     });
 
-    if (this.horariosSeleccionados.length == 0) {
-      await this.gruposService.getHorariosOnGrupo(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo`).then(res => { this.horariosSeleccionados = res });
+    if (this.horariosSelect.length == 0) {
+      await this.gruposService.getHorariosOnGrupo(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo`).then(res => { this.horariosSelect = res });
     }
 
     if (this.horarios.length == 0) {
       await this.horariosService.getHorarios(this.path + '/horarios').then(res => { this.horarios = res });
     }
 
-    this.horariosSeleccionados.sort((a, b) => a.position - b.position)
-    this.horariosChecked = this.horariosSeleccionados
+    this.horariosSelect.sort((a, b) => a.position - b.position)
 
   }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
 
-    this.horariosSeleccionados = ev.detail.complete(this.horariosSeleccionados);
+    this.horariosSelect = ev.detail.complete(this.horariosSelect);
 
-    this.firebaseService.updateDoc(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo/${this.horariosSeleccionados[ev.detail.from].uid}`, { position: ev.detail.to })
-    this.horariosSeleccionados.forEach(h => {
+    this.firebaseService.updateDoc(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo/${this.horariosSelect[ev.detail.from].uid}`, { position: ev.detail.to })
+    this.horariosSelect.forEach(h => {
       this.firebaseService.setDocument(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo/${h.uid}`, {
         title: h.title,
         active: h.active,
-        position: this.horariosSeleccionados.indexOf(h)
+        position: this.horariosSelect.indexOf(h)
       })
     })
 
   }
 
   addHorario() {
-    this.horariosSeleccionados = this.horariosChecked
-    this.horariosSeleccionados.forEach(h => {
+    this.horariosSelect = this.horariosChecked
+    this.horariosSelect.forEach(h => {
       this.firebaseService.setDocument(this.path + `/grupos/${this.idGrupo}/horariosOnGrupo/${h.uid}`, {
         title: h.title,
         active: h.active,
-        position: this.horariosSeleccionados.indexOf(h)
+        position: this.horariosSelect.indexOf(h)
       })
     })
     this.dismissModal()
@@ -106,8 +105,11 @@ export class GruposPage implements OnInit {
     if (this.horariosChecked.find(hc => hc.uid == uid)) {
       this.horariosChecked.splice(this.horariosChecked.indexOf(this.horariosChecked.find(hc => hc.uid == uid)), 1)
     } else {
+      console.log(this.horariosSelect);
+
       this.horariosChecked.push(this.horarios.find(h => h.uid == uid))
     }
+    console.log(this.horariosSelect);
 
   }
 
@@ -116,6 +118,6 @@ export class GruposPage implements OnInit {
   }
 
   isChecked(uid: string): boolean {
-    return this.horariosChecked.find(h => uid == h.uid) != -1
+    return this.horariosSelect.find(h => uid == h.uid) != undefined
   }
 }

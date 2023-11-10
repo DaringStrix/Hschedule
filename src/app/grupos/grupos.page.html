@@ -7,7 +7,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-reorder-group class="ion-margin ion-padding" [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-    <ion-item class="ion-margin ion-padding" lines="none" *ngFor="let h of horariosSeleccionados">
+    <ion-item class="ion-margin ion-padding" lines="none" *ngFor="let h of horariosSelect">
       <ion-label>
         {{h.title}}
       </ion-label>
