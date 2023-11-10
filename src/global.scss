@@ -48,9 +48,9 @@ ion-thumbnail {
 }
 
 
-@media (max-width:1920px) {
+@media (max-width:2000px) {
    ion-app {
-      zoom: calc(1920 / 1920);
+      zoom: calc(2000 / 2000);
    }
 
    .max-content {
@@ -59,46 +59,101 @@ ion-thumbnail {
    }
 }
 
-@media (max-width:1600px) {
+@media (max-width:1700px) {
    ion-app {
-      zoom: calc(1600 / 1920);
+      zoom: calc(1700 / 2000);
    }
 
    .max-content {
-      width: 150%;
+      width: 120%;
       height: max-content;
    }
 }
 
-@media (max-width:1275px) {
+@media (max-width:1300px) {
    ion-app {
-      zoom: calc(1275 / 1920);
+      zoom: calc(1300 / 1700);
    }
 
    .max-content {
-      width: 150%;
+      width: 140%;
       height: max-content;
    }
 }
 
-@media (max-width:968px) {
+@media (max-width:1000px) {
    ion-app {
-      zoom: calc(968 / 1920);
+      zoom: calc(1000 / 1300);
    }
 
    .max-content {
-      width: 200%;
+      width: 175%;
       height: max-content;
    }
 }
 
-@media (max-width:400px) {
+@media (max-width:750px) {
    ion-app {
-      zoom: calc(800 / 1920);
+      zoom: calc(750 / 1000);
    }
 
    .max-content {
-      width: 200%;
+      width: 250%;
+      height: max-content;
+   }
+}
+
+@media (max-width:600px) {
+   ion-app {
+      zoom: calc(600 / 750);
+   }
+
+   .max-content {
+      width: 300%;
+      height: max-content;
+   }
+}
+
+@media (max-width:500px) {
+   ion-app {
+      zoom: calc(500 / 600);
+   }
+
+   .max-content {
+      width: 350%;
+      height: max-content;
+   }
+}
+
+@media (max-width:420px) {
+   ion-app {
+      zoom: calc(420 / 500);
+   }
+
+   .max-content {
+      width: 450%;
+      height: max-content;
+   }
+}
+
+@media (max-width:350px) {
+   ion-app {
+      zoom: calc(350 / 420);
+   }
+
+   .max-content {
+      width: 600%;
+      height: max-content;
+   }
+}
+
+@media (max-width:250px) {
+   ion-app {
+      zoom: calc(250 / 350);
+   }
+
+   .max-content {
+      width: 700%;
       height: max-content;
    }
 }
@@ -153,6 +208,7 @@ ion-thumbnail {
    .full-button {
       height: 97%;
       padding: 0px !important;
+
       >ion-list {
          min-width: 100%;
          width: 100%;

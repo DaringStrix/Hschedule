@@ -26,6 +26,7 @@ export class HomePage implements OnInit {
     color: 'primary',
     url: '/horarios/primerHorario'
   }];
+  
   public primerGrupo: Grupo[] = [{
     uid: '0',
     title: 'HorarioEjemplo',
@@ -64,7 +65,7 @@ export class HomePage implements OnInit {
     }
     if (redirect) {
       if (this.primerHorario.length != 0) {
-        this.utilsService.routerLink(this.primerHorario['0'].url)
+        this.utilsService.routerLink("/home/dashboard")
       } else {
         this.addFirstHorario()
       }

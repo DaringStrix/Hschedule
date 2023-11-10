@@ -48,6 +48,10 @@ export class HorariosService {
 
   }
 
+  getHorariosGuardados() {
+    return this.horarios
+  }
+
   getColor(searchtitle: string) {
     const arrayH = this.utilsService.getFromLocalStorge('horarios')
     return arrayH.find(({ title }) => title === searchtitle).color
