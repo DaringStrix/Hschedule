@@ -12,26 +12,17 @@
     <ion-card-content>
 
       <ion-title class="ion-text-center">Hora de inicio</ion-title>
-
-      <ion-datetime-button class="ion-padding-top ion-padding-bottom" datetime="horaInicio"></ion-datetime-button>
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime [formControl]="form.controls.horainicio" [showDefaultButtons]="true" id="horaInicio" presentation="time"></ion-datetime>
-        </ng-template>
-      </ion-modal>
-
+      
+      <ion-button id="horaInicio" expand="block" fill="outline" shape="round" [color]="primaryColor">{{form.controls.horainicio.value}}</ion-button>
+      <ion-picker trigger="horaInicio" [columns]="pCHoraInicio" [buttons]="pBHoraInicio"></ion-picker>
 
       <ion-title class="ion-text-center">Hora de fin</ion-title>
+      
+      <ion-button id="horaFin" expand="block" fill="outline" shape="round" [color]="primaryColor">{{form.controls.horafin.value}}</ion-button>
+      <ion-picker trigger="horaFin" [columns]="pCHoraFin" [buttons]="pBHoraFin"></ion-picker>
 
-      <ion-datetime-button class="ion-padding-top" datetime="horaFin"></ion-datetime-button>
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime [formControl]="form.controls.horafin" [showDefaultButtons]="true" id="horaFin" presentation="time"></ion-datetime>
-        </ng-template>
-      </ion-modal>
       <div *ngIf="!validateTime()" class="ion-margin ion-padding">
-        <ion-item class="ion-margin-top"
-          lines="none" color="danger">
+        <ion-item class="ion-margin-top" lines="none" color="danger">
           <ion-text>
             La hora de fin necesita ser mayor que la de inicio
           </ion-text>

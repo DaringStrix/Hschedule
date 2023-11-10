@@ -11,19 +11,54 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class HorasComponent implements OnInit {
 
-
   form = new FormGroup({
     horainicio: new FormControl('00:00', [Validators.required]),
     horafin: new FormControl('00:10', [Validators.required]),
   })
-
-
 
   @Input() primaryColor!: string
   @Input() path!: string
 
   utilsService = inject(UtilsService)
   firebaseService = inject(FirebaseService)
+
+  public pCHoraInicio = [{
+    name: 'horas',
+    options: Array.from({ length: 24 }, (_, i) => ({ text: i < 10 ? `0${i}` : `${i}`, value: i })),
+  }, {
+    name: 'minutos',
+    options: Array.from({ length: 60 }, (_, i) => ({ text: i < 10 ? `0${i}` : `${i}`, value: i })),
+  }];
+
+  public pBHoraInicio = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+    },
+    {
+      text: 'Confirm',
+      handler: (value) => this.handler(this.form.controls.horainicio, value),
+    },
+  ];
+
+  public pCHoraFin = [{
+    name: 'horas',
+    options: Array.from({ length: 24 }, (_, i) => ({ text: i < 10 ? `0${i}` : `${i}` })),
+  }, {
+    name: 'minutos',
+    options: Array.from({ length: 60 }, (_, i) => ({ text: i < 10 ? `0${i}` : `${i}` })),
+  }];
+
+  public pBHoraFin = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+    },
+    {
+      text: 'Confirm',
+      handler: (value) => this.handler(this.form.controls.horafin, value),
+    },
+  ];
 
   constructor() { }
 
@@ -64,12 +99,16 @@ export class HorasComponent implements OnInit {
         })
     }
   }
-  
+
   validateTime(): boolean {
     if (this.form.controls.horafin.value.split(':') < this.form.controls.horainicio.value.split(':')) {
       return false;
     } else {
       return true;
     }
+  }
+
+  handler(control: FormControl<string>, value: any) {
+    control.setValue(value.horas.text + ':' + value.minutos.text)
   }
 }
