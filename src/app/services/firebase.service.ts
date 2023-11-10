@@ -78,6 +78,17 @@ export class FirebaseService {
       deleteDoc(doc(getFirestore(), path + `/horas/${res['uid']}`))
     })
     await deleteDoc(doc(getFirestore(), path))
+    // await this.getDocument(path).then(async res => {
+    //   const query = this.getDocs(path + `/horas`);
+    //   (await query).forEach(async each => {
+    //     await this.getDocument(path + `/horas/${each.id}`).then(async innerRes => {
+    //       const query = this.getDocs(path + `/horas/${each.id}/tareas`);
+    //       (await query).forEach(async innerEach => {
+    //         await deleteDoc(doc(getFirestore(), path + `/horas/${each.id}/tareas/${innerEach.id}`))
+    //       })
+    //     }).finally(async () => { await deleteDoc(doc(getFirestore(), path + `/horas/${each.id}`)) })
+    //   })
+    // }).finally(async () => await deleteDoc(doc(getFirestore(), path)))
   }
 
   async getDocs(path: string) {
