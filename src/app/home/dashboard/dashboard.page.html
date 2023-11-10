@@ -15,7 +15,7 @@
     <ion-row>
       <ion-col *ngFor="let horario of horarios" size="6">
         <ion-card>
-          <ion-item class="ion-text-center" [color]="horario.color">
+          <ion-item [href]="horario.url" class="ion-text-center" [color]="horario.color">
             <ion-card-header style="min-width: 100%;">
               <ion-card-title>{{horario.title}}</ion-card-title>
             </ion-card-header>

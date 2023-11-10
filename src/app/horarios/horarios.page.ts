@@ -127,7 +127,7 @@ export class HorariosPage implements OnInit {
         notifications: this.notificaciones
       }
 
-      if (this.options.notifications.length != 0) {
+      if (this.options.notifications.length != 0 && this.horarioActual.active) {
         LocalNotifications.schedule(this.options)
         this.options = {
           notifications: []
